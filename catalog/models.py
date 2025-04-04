@@ -1,7 +1,10 @@
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.urls import reverse
 from slugify import slugify
+
+from catalog.managers import CustomerManager
 
 
 class Country(models.Model):
@@ -87,6 +90,20 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product}"
+
+
+class Customer(AbstractUser):
+    username = None
+    email = models.EmailField(unique=True)
+    wishlist = models.ManyToManyField(Product, related_name="customers")
+
+    objects = CustomerManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return f"{self.email}, {self.first_name} {self.last_name}"
 
 
 def product_image_path(instance, filename):
