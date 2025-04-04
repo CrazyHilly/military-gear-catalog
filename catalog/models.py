@@ -77,3 +77,18 @@ class Accessory(Product):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.category = "3"
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="images"
+    )
+    image = models.ImageField(upload_to="product_image_path")
+
+    def __str__(self):
+        return f"Image for {self.product}"
+
+
+def product_image_path(instance, filename):
+    return (f"product_images/{instance.product.category}/"
+            f"{instance.product.id}/{filename}")
