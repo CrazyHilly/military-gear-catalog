@@ -1,4 +1,7 @@
+from django.core.validators import MaxValueValidator
 from django.db import models
+from django.urls import reverse
+from slugify import slugify
 
 
 class Country(models.Model):
@@ -10,3 +13,49 @@ class Country(models.Model):
 
     class Meta:
         ordering = ["ua_name"]
+
+
+class Product(models.Model):
+    CATEGORY_CHOICES = [
+        ("1", "Clothing"),
+        ("2", "Footwear"),
+        ("3", "Accessory"),
+    ]
+    name = models.CharField(max_length=100)
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="products"
+    )
+    description = models.TextField(blank=True, null=True)
+    price_low = models.PositiveIntegerField(
+        validators=[MaxValueValidator(10000)]
+    )
+    price_high = models.PositiveIntegerField(
+        validators=[MaxValueValidator(10000)]
+    )
+    available = models.BooleanField(default=True)
+    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES)
+    product_number = models.IntegerField(unique=True)
+    slug = models.SlugField(null=False)
+
+    def __str__(self):
+        return f"{self.product_number} {self.name}"
+
+    def save(self, *args, **kwargs):
+        last_product = Product.objects.filter(category=self.category).last()
+        if last_product:
+            self.product_number = last_product.product_number + 1
+        else:
+            self.product_number = int(self.category + "0001")
+        slug_name = f"{self.product_number}-{self.name}"
+        self.slug = slugify(slug_name, separator="-", lowercase=True)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("catalog:product-detail", args=[self.slug])
+
+    class Meta:
+        ordering = ["product_number"]
