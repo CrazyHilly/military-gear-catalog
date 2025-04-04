@@ -59,3 +59,21 @@ class Product(models.Model):
 
     class Meta:
         ordering = ["product_number"]
+
+
+class Clothing(Product):
+    def save(self, *args, **kwargs):
+        self.category = "1"
+        super().save(*args, **kwargs)
+
+
+class Footwear(Product):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.category = "2"
+
+
+class Accessory(Product):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.category = "3"
