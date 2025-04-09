@@ -2,7 +2,9 @@ from django.db.models import Q
 from django.views import generic
 
 from catalog.forms import ProductSearchForm
-from catalog.models import Product
+from catalog.models import (
+    Product, Clothing, Footwear, Accessory
+)
 
 
 class ProductDetailView(generic.DetailView):
@@ -33,3 +35,18 @@ class ProductListView(generic.ListView):
             initial={"search_input": search_input}
         )
         return context
+
+
+class ClothingListView(ProductListView):
+    queryset = Clothing.objects.select_related("country")
+    template_name = "catalog/product_list.html"
+
+
+class FootwearListView(ProductListView):
+    queryset = Footwear.objects.select_related("country")
+    template_name = "catalog/product_list.html"
+
+
+class AccessoryListView(ProductListView):
+    queryset = Accessory.objects.select_related("country")
+    template_name = "catalog/product_list.html"
