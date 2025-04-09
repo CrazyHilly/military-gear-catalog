@@ -3,7 +3,7 @@ from django.views import generic
 
 from catalog.forms import ProductSearchForm
 from catalog.models import (
-    Product, Clothing, Footwear, Accessory
+    Product, Clothing, Footwear, Accessory, Country
 )
 
 
@@ -50,3 +50,8 @@ class FootwearListView(ProductListView):
 class AccessoryListView(ProductListView):
     queryset = Accessory.objects.select_related("country")
     template_name = "catalog/product_list.html"
+
+
+class CountryListView(generic.ListView):
+    model = Country
+    paginate_by = 20
