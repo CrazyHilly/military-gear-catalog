@@ -11,7 +11,13 @@
   {% if countries_with_products %}
     <ul class="no-bullet">
       {% for country in countries_with_products %}
-        <li><h6><a href="{% url 'catalog:country-products-list' name=country.en_name %}">{{ country.ua_name }}</a> <span class="counter">({{ country.product_count }})</span></h6></li>
+        <li>
+          <h6>
+            <a href="{% url 'catalog:country-products-list' name=country.en_name %}">
+              {{ country.ua_name }}
+            </a> <span class="counter">({{ country.product_count }})</span>
+          </h6>
+        </li>
       {% endfor %}
     </ul>
   {% else %}
