@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+  <title>Вхід в кабінет | Defender</title>
+{% endblock %}
+
+{% block content %}
+  <h1>Вхід в кабінет</h1>
+  {% if form.errors %}
+    <p style="color:red">Неправильно введені дані</p>
+  {% endif %}
+  <form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Увійти">
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+{% endblock %}
