@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.views import generic
 
-# Create your views here.
+from catalog.models import Product
+
+
+class ProductDetailView(generic.DetailView):
+    model = Product
