@@ -1,3 +1,8 @@
 .idea
 venv
 **__pycache__
+db.sqlite3
+identifier.sqlite
+populate_db.py
+media
+static/images

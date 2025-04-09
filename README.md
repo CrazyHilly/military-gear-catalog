@@ -1,1 +1,1 @@
-"# military-gear-catalog" 
+"# military_gear_catalog"
