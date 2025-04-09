@@ -72,3 +72,10 @@ class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class CustomerWishlistView(LoginRequiredMixin, ProductListView):
+    template_name = "catalog/product_list.html"
+
+    def get_queryset(self):
+        return self.request.user.wishlist.all()
