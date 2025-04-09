@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -5,9 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import generic
 
 from catalog.forms import ProductSearchForm
-from catalog.models import (
-    Product, Clothing, Footwear, Accessory, Country, Customer
-)
+from catalog.models import Product, Clothing, Footwear, Accessory, Country
 
 
 class ProductDetailView(generic.DetailView):
@@ -69,7 +68,7 @@ class CountryProductsListView(ProductListView):
 
 
 class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Customer
+    model = get_user_model()
 
     def get_object(self, queryset=None):
         return self.request.user
