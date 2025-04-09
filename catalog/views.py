@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.views import generic
 
 from catalog.forms import ProductSearchForm
@@ -55,3 +56,11 @@ class AccessoryListView(ProductListView):
 class CountryListView(generic.ListView):
     model = Country
     paginate_by = 20
+
+
+class CountryProductsListView(ProductListView):
+    template_name = "catalog/product_list.html"
+
+    def get_queryset(self):
+        country = get_object_or_404(Country, en_name=self.kwargs.get("name"))
+        return super().get_queryset().filter(country=country)
