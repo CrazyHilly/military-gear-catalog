@@ -1,6 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views import generic
 
 from catalog.forms import ProductSearchForm
@@ -79,3 +80,14 @@ class CustomerWishlistView(LoginRequiredMixin, ProductListView):
 
     def get_queryset(self):
         return self.request.user.wishlist.all()
+
+
+@login_required
+def update_wishlist(request, product_number):
+    customer = request.user
+    product = Product.objects.get(product_number=product_number)
+    if product in customer.wishlist.all():
+        customer.wishlist.remove(product)
+    else:
+        customer.wishlist.add(product)
+    return redirect(request.META.get("HTTP_REFERER", "/"))
