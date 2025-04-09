@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>Мій кабінет | Defender</title>
+{% endblock %}
+
+{% block content %}
+  <p>Ім'я: {{ user.first_name|yesno:user.first_name }}</p>
+  <p>Прізвище: {{ user.last_name|yesno:user.last_name }}</p>
+  <p>Email: {{ user.email }}</p>
+{% endblock %}
