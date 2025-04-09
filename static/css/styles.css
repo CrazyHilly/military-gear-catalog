@@ -1,0 +1,130 @@
+:root {
+    --primary-color: #375a41;
+    --secondary-color: #626c65;
+}
+
+html, a, a:hover {
+    color: darkslategray;
+}
+
+body {
+    margin-top: 20px;
+}
+
+.sidebar-nav {
+    padding: 0;
+    margin-left: 0;
+    list-style: none;
+}
+
+.sidebar-nav-active, .sidebar-nav-active:hover {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.flex {
+    display: flex;
+    height: 1.5em;
+}
+
+.btn-primary, .btn-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    opacity: 0.9;
+}
+
+.btn-primary:hover {
+    opacity: 1;
+}
+
+.btn-secondary, .btn-secondary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    opacity: 0.7;
+}
+
+.btn-secondary:hover {
+    opacity: 1;
+}
+
+.btn-transparent {
+    border: none;
+    background: transparent;
+    padding: 0;
+    width: 0;
+    height: 0;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 2px .2rem rgba(55,120,65,.25);
+    border-color: var(--secondary-color)
+}
+
+.form-inline {
+    padding: 2pt;
+}
+
+.add-button {
+    float: right;
+}
+
+.greyed-out {
+    color: var(--secondary-color);
+}
+
+.no-bullet {
+    list-style: none inside;
+    padding: 0;
+}
+
+.counter {
+    color: var(--secondary-color);
+    font-size: 75%;
+    letter-spacing: 2px;
+}
+
+.call-out-icon {
+    width: 1.5em;
+    height: 1.3em;
+    padding-right: 3px;
+}
+
+.heart-icon {
+    width: 1.3em;
+    height: 1.1em;
+    padding-right: 3px;
+}
+
+.exit-icon {
+    display: inline;
+    width: 1.3em;
+    height: 1.1em;
+    margin: 5px 0 0 15px;
+    opacity: 0.6;
+}
+
+.exit-icon:hover {
+    opacity: 0.9;
+}
+
+.phone-number {
+    cursor: pointer;
+    display: inline;
+    vertical-align: top;
+}
+
+.phone-number:hover {
+    font-weight: bold;
+}
+
+.indented {
+    padding: 10px 25px;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.pointer {
+    cursor: default;
+}
