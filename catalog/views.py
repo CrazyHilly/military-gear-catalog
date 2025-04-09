@@ -1,10 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views import generic
 
 from catalog.forms import ProductSearchForm
 from catalog.models import (
-    Product, Clothing, Footwear, Accessory, Country
+    Product, Clothing, Footwear, Accessory, Country, Customer
 )
 
 
@@ -64,3 +65,10 @@ class CountryProductsListView(ProductListView):
     def get_queryset(self):
         country = get_object_or_404(Country, en_name=self.kwargs.get("name"))
         return super().get_queryset().filter(country=country)
+
+
+class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Customer
+
+    def get_object(self, queryset=None):
+        return self.request.user
