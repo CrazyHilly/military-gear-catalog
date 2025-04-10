@@ -30,7 +30,7 @@
   <br>
   <li>
     <a href="{% url 'catalog:product-list' %}"
-       class="{% if request.resolver_match.view_name == 'catalog:product-list' %}sidebar-nav-active{% endif %}">
+       class="{% if 'product-list' in request.resolver_match.view_name %}sidebar-nav-active{% endif %}">
       Каталог товарів
     </a>
   </li>
