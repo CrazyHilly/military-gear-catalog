@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>Контакти | Defender</title>
+{% endblock %}
+
+{% block content %}
+  <h2>Контакти</h2>
+  <br>
+  <strong>Номер телефону:</strong>
+  <div class="pointer">
+    <img class="call-out-icon" alt="Київстар" src="/static/images/kyivstar.png">
+    <img class="call-out-icon" alt="Viber" src="/static/images/viber.png">
+    <div class="phone-number">+38 (068) 626-67-79</div>
+  </div>
+  <br>
+
+  <strong>Адреса:</strong>
+  <address class="indented">
+    Ринок "Чагарі"<br>
+    вул. Пилипа Орлика, 18а<br>
+    <strong>м. Дрогобич</strong>, Львівська обл.<br>
+  </address>
+
+  <strong>Як нас знайти:</strong>
+  <div class="indented">
+    <details open>
+      <summary class="underlined">Вхід на ринок з вул. П. Орлика</summary>
+      <p class="indented">За брамою праворуч. Магазин знаходиться за магазином з килимами.</p>
+    </details>
+    <details open>
+      <summary class="underlined">Вхід на ринок з вул. В. Великого</summary>
+      <p class="indented">За брамою прямо до кінця алеї -> ліворуч до кінця алеї.</p>
+    </details>
+  </div>
+{% endblock %}
