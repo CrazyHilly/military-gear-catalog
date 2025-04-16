@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+  <title>Оновити дані | Defender</title>
+{% endblock %}
+
+{% block content %}
+  <form class="" method="post" action="" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary mr-1 ml-1" type="submit" value="Змінити" autocomplete="off-word">
+    <a class="btn btn-secondary" href="{% url 'catalog:customer-detail' %}">Відмінити</a>
+  </form>
+{% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views import generic
 
 from catalog.forms import ProductSearchForm
@@ -69,6 +70,16 @@ class CountryProductsListView(ProductListView):
 
 class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class CustomerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+    fields = ["first_name", "last_name"]
+    template_name = "catalog/customer_update.html"
+    success_url = reverse_lazy("catalog:customer-detail")
 
     def get_object(self, queryset=None):
         return self.request.user

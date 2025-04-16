@@ -3,7 +3,8 @@ from django.urls import path
 from catalog.views import (
     ProductListView, ClothingListView, FootwearListView, AccessoryListView,
     ProductDetailView, CountryListView, CountryProductsListView,
-    CustomerDetailView, CustomerWishlistView, update_wishlist
+    CustomerDetailView, CustomerWishlistView, update_wishlist,
+    CustomerUpdateView
 )
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     path("countries/", CountryListView.as_view(), name="country-list"),
     path("countries/<str:name>/", CountryProductsListView.as_view(), name="country-products-list"),
     path("customer/", CustomerDetailView.as_view(), name="customer-detail"),
+    path("customer/update", CustomerUpdateView.as_view(), name="customer-update"),
     path("customer/wishlist/", CustomerWishlistView.as_view(), name="customer-wish-list"),
 ]
 
