@@ -5,7 +5,20 @@
 {% endblock %}
 
 {% block content %}
-  <p>Ім'я: {{ user.first_name|yesno:user.first_name }}</p>
-  <p>Прізвище: {{ user.last_name|yesno:user.last_name }}</p>
-  <p>Email: {{ user.email }}</p>
+  <p>
+    <span class="font-size90">Ім'я:</span>
+    <br>
+    <b>{{ user.first_name|yesno:user.first_name }}</b>
+  </p>
+  <p>
+    <span class="font-size90">Прізвище:</span>
+    <br>
+    <b>{{ user.last_name|yesno:user.last_name }}</b>
+  </p>
+  <p>
+    <span class="font-size90">Електронна адреса:</span>
+    <br>
+    <b>{{ user.email }}</b>
+  </p>
+  <a href="{% url 'catalog:customer-update' %}" class="btn btn-primary">Змінити</a>
 {% endblock %}
