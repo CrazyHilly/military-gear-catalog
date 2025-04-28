@@ -22,7 +22,7 @@
                    src="/media/product_images/{{ product.category }}/{{ product.product_number }}">
               {{ product }}
             </a>
-            <a href="{% url 'catalog:update-wishlist' product_number=product.product_number %}?next={{ request.path }}">
+            <a href="{% url 'catalog:update-wishlist' product_number=product.product_number %}?next={{ request.path }}&action=add">
               {% if product.product_number not in customer_wishlist_product_numbers %}
                 <img class="heart-icon" src="/static/images/heart-transparent.png" alt="Додати до списку бажань">
               {% else %}
