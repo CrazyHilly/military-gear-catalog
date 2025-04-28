@@ -100,4 +100,4 @@ def update_wishlist(request, product_number):
         customer.wishlist.remove(product)
     else:
         customer.wishlist.add(product)
-    return redirect(request.META.get("HTTP_REFERER", "/"))
+    return redirect(request.GET.get("next", "/"))
