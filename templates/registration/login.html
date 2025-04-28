@@ -13,7 +13,8 @@
   <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Увійти">
+    <input type="submit" value="Увійти" class="btn btn-primary">
     <input type="hidden" name="next" value="{{ next }}">
+    <a href="#" class="btn btn-secondary">Зареєструватись</a>
   </form>
 {% endblock %}
