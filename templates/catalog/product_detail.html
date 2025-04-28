@@ -20,13 +20,9 @@
       <li class="greyed-out">Немає в наявності</li>
     {% endif %}
     <li>
-      <a href="{% url 'catalog:update-wishlist' product_number=product.product_number %}?next={{ request.path }}&action=add">
-        {% if product.product_number not in customer_wishlist_product_numbers %}
-          <img class="heart-icon" src="/static/images/heart-transparent.png" alt="Додати до списку бажань">
-        {% else %}
-          <img class="heart-icon" src="/static/images/heart-solid.png" alt="Видалити зі списку бажань">
-        {% endif %}
-      </a>
+      {% block update_wishlist %}
+        {% include "includes/update_wishlist.html" %}
+      {% endblock %}
     </li>
   </ul>
 {% endblock %}
