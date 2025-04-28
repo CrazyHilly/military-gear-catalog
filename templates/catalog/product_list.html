@@ -13,20 +13,26 @@
   </form>
 
   {% if object_list %}
-    <ul class="no-bullet">
-      {% for product in object_list %}
-        <li>
-          <a href="{{ product.get_absolute_url }}">{{ product }}</a>
-          <a href="{% url 'catalog:update-wishlist' product_number=product.product_number %}">
-            {% if product.product_number not in customer_wishlist_product_numbers %}
-              <img class="heart-icon" src="/static/images/heart-transparent.png" alt="Додати до списку бажань">
-            {% else %}
-              <img class="heart-icon" src="/static/images/heart-solid.png" alt="Видалити зі списку бажань">
-            {% endif %}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
+    <div class="product-grid">
+      <ul class="no-bullet">
+        {% for product in object_list %}
+          <li class="product-card">
+            <a href="{{ product.get_absolute_url }}">
+              <img class="product-image" alt="{{ product.name }}"
+                   src="/media/product_images/{{ product.category }}/{{ product.product_number }}">
+              {{ product }}
+            </a>
+            <a href="{% url 'catalog:update-wishlist' product_number=product.product_number %}">
+              {% if product.product_number not in customer_wishlist_product_numbers %}
+                <img class="heart-icon" src="/static/images/heart-transparent.png" alt="Додати до списку бажань">
+              {% else %}
+                <img class="heart-icon" src="/static/images/heart-solid.png" alt="Видалити зі списку бажань">
+              {% endif %}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   {% else %}
     <p class="greyed-out">Немає товарів</p>
   {% endif %}
