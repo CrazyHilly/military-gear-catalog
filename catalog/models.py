@@ -87,9 +87,10 @@ class ProductImage(models.Model):
         Product, on_delete=models.CASCADE, related_name="images"
     )
     image = models.ImageField(upload_to="product_image_path")
+    is_main = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Image for {self.product}"
+        return f"Зображення: {self.product}"
 
 
 class Customer(AbstractUser):
