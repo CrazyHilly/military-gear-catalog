@@ -78,10 +78,6 @@ body {
     border-color: var(--secondary-color)
 }
 
-.form-inline {
-    padding: 2pt;
-}
-
 .add-button {
     float: right;
 }

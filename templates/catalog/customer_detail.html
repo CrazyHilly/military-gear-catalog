@@ -20,5 +20,11 @@
     <br>
     <b>{{ user.email }}</b>
   </p>
-  <a href="{% url 'catalog:customer-update' %}" class="btn btn-primary">Змінити</a>
+  <div class="form-inline">
+    <a href="{% url 'catalog:customer-update' %}" class="btn btn-primary">Змінити</a>
+    <form class="m-0" method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-secondary ml-1">Вийти з кабінету</button>
+    </form>
+  </div>
 {% endblock %}
