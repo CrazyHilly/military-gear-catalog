@@ -125,13 +125,7 @@ body {
     opacity: 0.9;
 }
 
-.phone-number {
-    cursor: pointer;
-    display: inline;
-    vertical-align: top;
-}
-
-.phone-number:hover {
+.hover-bold:hover {
     font-weight: bold;
 }
 
