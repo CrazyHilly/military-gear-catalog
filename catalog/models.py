@@ -89,6 +89,11 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to="product_image_path")
     is_main = models.BooleanField(default=False)
 
+    def save(self, *args, **kwargs):
+        if self.is_main:
+            ProductImage.objects.filter(product=self.product, is_main=True).exclude(pk=self.pk).update(is_main=False)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"Зображення: {self.product}"
 
