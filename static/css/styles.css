@@ -158,7 +158,8 @@ body {
   width: 100%;
   max-height: 300px;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: transparent;
 }
 
 .page-link, .page-link:hover {
