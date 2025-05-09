@@ -62,6 +62,11 @@ class Product(models.Model):
 
     class Meta:
         ordering = ["product_number"]
+        
+    @property
+    def main_image(self):
+        main_image = self.images.filter(is_main=True).first()
+        return main_image
 
 
 class Clothing(Product):
