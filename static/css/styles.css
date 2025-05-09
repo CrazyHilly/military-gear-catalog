@@ -161,3 +161,25 @@ body {
   object-fit: cover;
 }
 
+.page-link, .page-link:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.page-link:hover {
+  background-color: var(--secondary-shadow-color);
+}
+
+.page-item.active .page-link {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+}
+
+.page-link:disabled {
+  color: var(--secondary-shadow-color);
+}
+
+.page-link:focus,
+.page-link:not(:disabled):not(.disabled):active:focus {
+  box-shadow: 0 0 0 .2rem var(--primary-shadow-color);
+}
