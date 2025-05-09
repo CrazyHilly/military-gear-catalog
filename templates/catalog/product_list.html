@@ -8,26 +8,36 @@
 {% block content %}
   <form class="form-inline m-0" method="get" action="">
     {{ search_form|crispy }}
-    <input class="btn btn-primary mr-1 ml-1" type="submit" value="Пошук" autocomplete="off-word">
-    <a class="btn btn-secondary" href="{% url 'catalog:product-list' %}">Очистити</a>
+    <input 
+      class="btn btn-primary mr-1 ml-1" 
+      type="submit" 
+      value="Пошук" 
+      autocomplete="off-word"
+    >
+    <a class="btn btn-secondary" href="{% url 'catalog:product-list' %}">
+      Очистити
+    </a>
   </form>
 
   {% if object_list %}
     <div class="product-grid">
-      <ul class="no-bullet">
-        {% for product in object_list %}
-          <li class="product-card">
-            <a href="{{ product.get_absolute_url }}">
-              <img class="product-image" alt="{{ product.name }}"
-                   src="/media/product_images/{{ product.category }}/{{ product.product_number }}">
-              {{ product }}
-            </a>
-            {% block update_wishlist %}
-              {% include "includes/update_wishlist.html" %}
-            {% endblock %}
-          </li>
-        {% endfor %}
-      </ul>
+      {% for product in object_list %}
+        <div class="product-card">
+        <a href="{{ product.get_absolute_url }}">
+          <img class="product-image" alt="{{ product.name }}"
+            {% if product.main_image %}
+              src="{{ product.main_image.image.url }}"
+            {% else %}
+              src="{{ product.images.first.image.url }}"
+            {% endif %}
+          >
+          {{ product }}
+        </a>
+        {% block update_wishlist %}
+          {% include "includes/update_wishlist.html" %}
+        {% endblock %}
+        </div>
+      {% endfor %}
     </div>
   {% else %}
     <p class="greyed-out">Немає товарів</p>
