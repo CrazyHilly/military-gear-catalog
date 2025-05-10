@@ -1,11 +1,13 @@
+{% load query_transform %}
+
 {% if not user.is_authenticated %}
-  <a href="{% url 'catalog:update-wishlist' product_number=product.product_number %}?next={{ request.path }}&action=add">
+  <a href="{% update_wishlist_url product 'add' %}">
     <img class="shield-icon" 
       src="/static/images/shield-transparent.png" 
       alt="Додати до списку бажань">
   </a>
 {% else %}
-  <a href="{% url 'catalog:update-wishlist' product_number=product.product_number %}?next={{ request.path }}">
+  <a href="{% update_wishlist_url product %}">
     {% if product.product_number not in customer_wishlist_product_numbers %}
       <img class="shield-icon" 
         src="/static/images/shield-transparent.png" 
