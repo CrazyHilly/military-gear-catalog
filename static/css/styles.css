@@ -103,10 +103,11 @@ body {
     padding-right: 3px;
 }
 
-.heart-icon {
-    width: 1.3em;
-    height: 1.1em;
+.shield-icon {
+    width: 1.2em;
+    height: 1em;
     padding-right: 3px;
+    margin: 0 0 3px 2px;
 }
 
 .exit-icon {
