@@ -48,15 +48,19 @@ class Command(BaseCommand):
                             product=product,
                             image=db_url,
                             )
-                        message = f'Зображення "{image_name}" для '
-                        f'"{product}" додано'
+                        message = (
+                            f'Зображення "{image_name}" для '
+                            f'"{product}" додано'
+                        )
                         
                     if (image_name[:-4] == product_number 
                         and not db_image.is_main):
                         db_image.is_main = True
                         db_image.save()
-                        message = f'Основне зображення "{image_name}" для '
-                        f'"{product}" додано'
+                        message = (
+                            f'Основне зображення "{image_name}" для '
+                            f'"{product}" додано'
+                        )
                     
                     if message:
                         print(message)
