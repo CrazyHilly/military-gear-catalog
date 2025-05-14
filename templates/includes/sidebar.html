@@ -26,6 +26,12 @@
         Вхід в кабінет
       </a>
     </li>
+    <li>
+      <a href="{% url 'registration' %}?next={{ request.path }}"
+         class="{% if request.resolver_match.view_name == 'registration' %}sidebar-nav-active{% endif %}">
+        Зареєструватись
+      </a>
+    </li>
   {% endif %}
   <br>
   <li>

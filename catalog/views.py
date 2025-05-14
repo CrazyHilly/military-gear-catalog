@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from catalog.forms import ProductSearchForm
+from catalog.forms import ProductSearchForm, RegistrationForm
 from catalog.models import Product, Clothing, Footwear, Accessory, Country
 
 
@@ -83,6 +83,25 @@ class CustomerUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+    
+
+class RegistrationView(generic.CreateView):
+    model = get_user_model()
+    form_class = RegistrationForm
+    template_name = "registration/registration.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["next"] = self.request.GET.get("next", "")
+        return context
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        return response
+    
+    def get_success_url(self):
+        return self.request.POST.get("next") or reverse_lazy("product-list")
 
 
 class CustomerWishlistView(LoginRequiredMixin, ProductListView):

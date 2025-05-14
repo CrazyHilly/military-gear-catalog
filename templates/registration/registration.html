@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+  <title>Реєстрація | Defender</title>
+{% endblock %}
+
+{% block content %}
+  <h1>Реєстрація</h1>
+  {% if form.errors %}
+    <p style="color:red">Неправильно введені дані</p>
+  {% endif %}
+  <form action="{% url 'registration' %}" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Зареєструватись" class="btn btn-primary">
+    <input type="hidden" name="next" value="{{ next }}">
+    <a href="{% url 'registration' %}" class="btn btn-secondary">
+      Очистити
+    </a>
+  </form>
+{% endblock %}
