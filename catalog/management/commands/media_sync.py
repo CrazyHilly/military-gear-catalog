@@ -6,7 +6,7 @@ from catalog.models import Product, ProductImage
 MEDIA_ROOT = os.path.join("media", "product_images")
 
 class Command(BaseCommand):
-    help = "Sync images in the media folder with the ProductImage model"
+    help = "Синхронізація зображень між папкою з файлами та базою даних"
 
     def handle(self, *args, **options):
         self.add_new_images()
