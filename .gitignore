@@ -7,3 +7,4 @@ populate_db.py
 media
 static/images
 to_do.txt
+.vscode/
