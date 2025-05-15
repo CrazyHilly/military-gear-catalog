@@ -20,27 +20,30 @@
   </form>
 
   {% if object_list %}
-    <div class="product-grid">
+    <div class="product-grid-list">
       {% for product in object_list %}
-        <div class="product-card">
-        <a href="{{ product.get_absolute_url }}">
-          <img class="product-image" alt="{{ product.name }}"
-            {% if product.main_image %}
-              src="{{ product.main_image.image.url }}"
-            {% else %}
-              src="{{ product.images.first.image.url }}"
-            {% endif %}
-          >
-          {{ product }}
-        </a>
-        {% block update_wishlist %}
-          {% include "includes/update_wishlist.html" %}
-        {% endblock %}
+        <div class="product-card-list {% if not product.available %}unavailable{% endif %}">
+          <a href="{{ product.get_absolute_url }}">
+            <img class="product-image-list mb-2" alt="{{ product.name }}"
+              {% if product.main_image %}
+                src="{{ product.main_image.image.url }}"
+              {% else %}
+                src="{{ product.images.first.image.url }}"
+              {% endif %}
+            >
+          </a>
+          {{ product.name }}
+          {% block update_wishlist %}
+            {% include "includes/update_wishlist.html" %}
+          {% endblock %}
+          <p class="font-size-09 text-color-grey">
+            Код товару: {{ product.product_number }}
+          </p>
         </div>
       {% endfor %}
     </div>
   {% else %}
     <br>
-    <p class="greyed-out">Немає товарів</p>
+    <p class="text-color-grey">Немає товарів</p>
   {% endif %}
 {% endblock %}
