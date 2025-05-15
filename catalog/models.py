@@ -61,7 +61,7 @@ class Product(models.Model):
         return reverse("catalog:product-detail", args=[self.slug])
 
     class Meta:
-        ordering = ["product_number"]
+        ordering = ["id"]
         
     @property
     def main_image(self):
