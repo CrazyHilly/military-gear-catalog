@@ -48,13 +48,15 @@ class Product(models.Model):
         return f"{self.product_number} {self.name}"
 
     def save(self, *args, **kwargs):
-        last_product = Product.objects.filter(category=self.category).last()
-        if last_product:
-            self.product_number = last_product.product_number + 1
-        else:
-            self.product_number = int(self.category + "0001")
-        slug_name = f"{self.product_number}-{self.name}"
-        self.slug = slugify(slug_name, separator="-", lowercase=True)
+        if not self.product_number:
+            last_product = Product.objects.filter(category=self.category).last()
+            if last_product:
+                self.product_number = last_product.product_number + 1
+            else:
+                self.product_number = int(self.category + "0001")
+        if not self.slug:
+            slug_name = f"{self.product_number}-{self.name}"
+            self.slug = slugify(slug_name, separator="-", lowercase=True)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
