@@ -5,24 +5,44 @@
 {% endblock %}
 
 {% block content %}
-  <h2>{{ product.name }}</h2>
-  <ul class="no-bullet">
-    <li>{{ product.price_low }}-{{ product.price_high }} грн</li>
-    {% if product.country %}
-      <li>{{ product.country }}</li>
-    {% endif %}
-    {% if product.description %}
-      <li>{{ product.description }}</li>
-    {% endif %}
-    {% if product.available %}
-      <li>В наявності</li>
-    {% else %}
-      <li class="greyed-out">Немає в наявності</li>
-    {% endif %}
-    <li>
-      {% block update_wishlist %}
-        {% include "includes/update_wishlist.html" %}
-      {% endblock %}
-    </li>
-  </ul>
+  <div class="product-grid-display">
+    <div class="product-card-display">
+      <img class="product-image-display" alt="{{ product.name }}"
+        {% if product.main_image %}
+          src="{{ product.main_image.image.url }}"
+        {% else %}
+          src="{{ product.images.first.image.url }}"
+        {% endif %}
+      >
+    </div>
+    <ul class="no-bullet">
+      <li>
+        <h2 class="mb-0">{{ product.name }}</h2>
+      </li>
+      <li class="font-size-09 text-color-grey">
+        Код товару: {{ product.product_number }}
+      </li>
+      <li class="bold mt-2 mb-2">
+        {{ product.price_low }}-{{ product.price_high }} грн
+      </li>
+      {% if product.country %}
+        <li>{{ product.country }}</li>
+      {% endif %}
+      {% if product.description %}
+        <li>{{ product.description }}</li>
+      {% endif %}
+      {% if product.available %}
+        <li>Є в наявності</li>
+      {% else %}
+        <li class="text-color-grey">Немає в наявності</li>
+      {% endif %}
+      <li>
+        {% block update_wishlist %}
+          <div class="detail-view mt-2">
+            {% include "includes/update_wishlist.html" %}
+          </div>
+        {% endblock %}
+      </li>
+    </ul>
+  </div>
 {% endblock %}
