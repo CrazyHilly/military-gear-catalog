@@ -40,7 +40,7 @@
       Каталог товарів
     </a>
   </li>
-  <ul>
+  <ul class="ul-shield">
     <li>
       <a href="{% url 'catalog:clothing-list' %}"
          class="{% if request.resolver_match.view_name == 'catalog:clothing-list' %}sidebar-nav-active{% endif %}">
@@ -68,7 +68,7 @@
         Товари за країнами
       </a>
     </li>
-    <ul>
+    <ul  class="ul-shield">
       {% for country in countries_with_products %}
         <li>
           <a href="{% url 'catalog:country-products-list' name=country.en_name %}"
