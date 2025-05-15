@@ -72,6 +72,10 @@ body {
   vertical-align: middle;
 }
 
+.ul-shield li.sidebar-nav-active::before {
+  background-image: url("/static/images/shield-solid.png");
+}
+
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:focus,

@@ -3,7 +3,8 @@
     <li class="flex">
       <a href="{% url 'catalog:customer-detail' %}"
          style="display:inline-block"
-         class="{% if request.resolver_match.view_name == 'catalog:customer-detail' %}sidebar-nav-active{% endif %}">
+         class="{% if request.resolver_match.view_name == 'catalog:customer-detail' %}
+           sidebar-nav-active{% endif %}">
         Мій кабінет
       </a>
       <form method="POST" action="{% url 'logout' %}">
@@ -15,20 +16,23 @@
     </li>
     <li>
       <a href="{% url 'catalog:customer-wish-list' %}"
-         class="{% if request.resolver_match.view_name == 'catalog:customer-wish-list' %}sidebar-nav-active{% endif %}">
+         class="{% if request.resolver_match.view_name == 'catalog:customer-wish-list' %}
+         sidebar-nav-active{% endif %}">
         Список бажань
       </a>
     </li>
   {% else %}
     <li>
       <a href="{% url 'login' %}?next={{ request.path }}"
-         class="{% if request.resolver_match.view_name == 'login' %}sidebar-nav-active{% endif %}">
+         class="{% if request.resolver_match.view_name == 'login' %}
+         sidebar-nav-active{% endif %}">
         Вхід в кабінет
       </a>
     </li>
     <li>
       <a href="{% url 'registration' %}?next={{ request.path }}"
-         class="{% if request.resolver_match.view_name == 'registration' %}sidebar-nav-active{% endif %}">
+         class="{% if request.resolver_match.view_name == 'registration' %}
+         sidebar-nav-active{% endif %}">
         Зареєструватись
       </a>
     </li>
@@ -36,43 +40,39 @@
   <br>
   <li>
     <a href="{% url 'catalog:product-list' %}"
-       class="{% if 'product-list' in request.resolver_match.view_name %}sidebar-nav-active{% endif %}">
+       class="{% if 'product-list' in request.resolver_match.view_name %}
+       sidebar-nav-active{% endif %}">
       Каталог товарів
     </a>
   </li>
   <ul class="ul-shield">
-    <li>
-      <a href="{% url 'catalog:clothing-list' %}"
-         class="{% if request.resolver_match.view_name == 'catalog:clothing-list' %}sidebar-nav-active{% endif %}">
-        Одяг
-      </a>
+    <li class="{% if request.resolver_match.view_name == 'catalog:clothing-list' %}
+      sidebar-nav-active{% endif %}">
+      <a href="{% url 'catalog:clothing-list' %}">Одяг</a>
     </li>
-    <li>
-      <a href="{% url 'catalog:footwear-list' %}"
-         class="{% if request.resolver_match.view_name == 'catalog:footwear-list' %}sidebar-nav-active{% endif %}">
-        Взуття
-      </a>
+    <li class="{% if request.resolver_match.view_name == 'catalog:footwear-list' %}
+      sidebar-nav-active{% endif %}">
+      <a href="{% url 'catalog:footwear-list' %}">Взуття</a>
     </li>
-    <li>
-      <a href="{% url 'catalog:accessory-list' %}"
-         class="{% if request.resolver_match.view_name == 'catalog:accessory-list' %}sidebar-nav-active{% endif %}">
-        Аксесуари
-      </a>
+    <li class="{% if request.resolver_match.view_name == 'catalog:accessory-list' %}
+      sidebar-nav-active{% endif %}">
+      <a href="{% url 'catalog:accessory-list' %}">Аксесуари</a>
     </li>
   </ul>
   <br>
   {% if countries_with_products %}
     <li>
       <a href="{% url 'catalog:country-list' %}"
-         class="{% if request.resolver_match.view_name == 'catalog:country-list' %}sidebar-nav-active{% endif %}">
+         class="{% if request.resolver_match.view_name == 'catalog:country-list' %}
+         sidebar-nav-active{% endif %}">
         Товари за країнами
       </a>
     </li>
     <ul  class="ul-shield">
       {% for country in countries_with_products %}
-        <li>
-          <a href="{% url 'catalog:country-products-list' name=country.en_name %}"
-             class="{% if country.en_name == request.resolver_match.kwargs.name %}sidebar-nav-active{% endif %}">
+        <li class="{% if country.en_name == request.resolver_match.kwargs.name %}
+          sidebar-nav-active{% endif %}">
+          <a href="{% url 'catalog:country-products-list' name=country.en_name %}">
             {{ country.ua_name }}
           </a>
         </li>
@@ -82,19 +82,22 @@
   <br>
   <li>
     <a href="{% url 'how-to-order' %}"
-       class="{% if request.resolver_match.view_name == 'how-to-order' %}sidebar-nav-active{% endif %}">
+       class="{% if request.resolver_match.view_name == 'how-to-order' %}
+       sidebar-nav-active{% endif %}">
       Замовлення
     </a>
   </li>
   <li>
     <a href="{% url 'contacts' %}"
-       class="{% if request.resolver_match.view_name == 'contacts' %}sidebar-nav-active{% endif %}">
+       class="{% if request.resolver_match.view_name == 'contacts' %}
+       sidebar-nav-active{% endif %}">
       Контакти
     </a>
   </li>
   <li>
     <a href="{% url 'about-us' %}"
-       class="{% if request.resolver_match.view_name == 'about-us' %}sidebar-nav-active{% endif %}">
+       class="{% if request.resolver_match.view_name == 'about-us' %}
+       sidebar-nav-active{% endif %}">
       Про нас
     </a>
   </li>
