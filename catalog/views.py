@@ -16,7 +16,7 @@ class ProductDetailView(generic.DetailView):
 
 class ProductListView(generic.ListView):
     model = Product
-    paginate_by = 8
+    paginate_by = 12
 
     def get_queryset(self):
         queryset = super().get_queryset()
