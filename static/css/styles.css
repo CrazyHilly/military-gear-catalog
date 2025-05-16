@@ -268,3 +268,35 @@ body {
 .page-link:not(:disabled):not(.disabled):active:focus {
   box-shadow: 0 0 0 .2rem var(--primary-shadow-color);
 }
+
+.main-store-image {
+  display: block;
+  width: 62.5%;
+  height: auto;
+  margin-top: 20px;
+}
+
+.store-image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.photo-card-display {
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.store-image {
+  width: 30%;
+}
+
+.store-location-image {
+  display: block;
+  width: 62.5%;
+  height: auto;
+  margin-bottom: 30px;
+}
+
+.details
