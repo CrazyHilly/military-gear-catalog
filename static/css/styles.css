@@ -153,7 +153,14 @@ body {
     width: 1.2em;
     height: 1em;
     padding-right: 3px;
-    margin: 0 0 3px 2px;
+    margin: 5px;
+}
+
+.product-grid-list .shield-icon {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.5em;
+  z-index: 10;
 }
 
 .detail-view .shield-icon {
@@ -197,12 +204,13 @@ body {
 }
 
 .product-card-list {
+  position: relative;
   background-color: #fff;
   text-align: center;
   overflow: hidden;
   border: 2px solid var(--primary-shadow-color);
   border-radius: 4px;
-  padding: 10px;
+  padding: 7px 17px;
   box-shadow: 0 0 8px 0.1rem var(--primary-shadow-color);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
