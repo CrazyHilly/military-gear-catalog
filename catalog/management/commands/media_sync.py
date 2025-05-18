@@ -24,24 +24,22 @@ class Command(BaseCommand):
 
             for product_number in os.listdir(category_path):
                 product_path = os.path.join(category_path, product_number)
-                product = (
-                    Product.objects
-                    .filter(product_number=product_number)
-                    .first()
-                    )
+                product = Product.objects.filter(product_number=product_number).first()
 
                 if not os.path.isdir(product_path) or not product:
                     continue
                 
                 for image_name in os.listdir(product_path):
                     image_path = os.path.join(product_path, image_name)
-                    if (not os.path.exists(image_path) 
-                        or os.path.isdir(image_path)):
+                    if not os.path.exists(image_path) or os.path.isdir(image_path):
                         continue
 
                     message = ""
                     db_url = os.path.join(
-                        "product_images", category, product_number, image_name
+                        "product_images", 
+                        category, 
+                        product_number, 
+                        image_name
                         )
                     db_image = product.images.filter(image=db_url).first()
                     if not db_image:
@@ -49,19 +47,14 @@ class Command(BaseCommand):
                             product=product,
                             image=db_url,
                             )
-                        message = (
-                            f'Зображення "{image_name}" для '
-                            f'"{product}" додано'
-                        )
-                        
-                    if (image_name[:-4] == product_number 
-                        and not db_image.is_main):
+                        message = f'Зображення "{image_name}" для "{product}" додано'
+                    
+                    image_base_name, _ = os.path.splitext(image_name)
+                    if image_base_name == product_number and not db_image.is_main:
                         db_image.is_main = True
                         db_image.save()
-                        message = (
-                            f'Основне зображення "{image_name}" для '
-                            f'"{product}" додано'
-                        )
+                        message = (f'Основне зображення "{image_name}" для '
+                                   f'"{product}" додано')
                     
                     if message:
                         print(message)
