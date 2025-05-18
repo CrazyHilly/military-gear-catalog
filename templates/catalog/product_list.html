@@ -29,11 +29,7 @@
           <a href="{{ product.get_absolute_url }}">
             <h6>{{ product.name }}</h6>
             <img class="product-image-list mb-2" alt="{{ product.name }}"
-              {% if product.main_image %}
-                src="{{ product.main_image.image.url }}"
-              {% else %}
-                src="{{ product.images.first.image.url }}"
-              {% endif %}>
+                src="{{ product.main_image.image.url }}">
           </a>
           {% if product.country %}
             <p class="mb-0">{{ product.country }}</p>

@@ -121,10 +121,7 @@ def update_wishlist(request, product_number):
     if action == "add":
         customer.wishlist.add(product)
     else:
-        if product in customer.wishlist.all():
-            customer.wishlist.remove(product)
-        else:
-            customer.wishlist.add(product)
+        customer.wishlist.remove(product)
             
     return redirect(request.GET.get("next", "/"))
 
