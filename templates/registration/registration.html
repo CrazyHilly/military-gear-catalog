@@ -8,8 +8,11 @@
 {% block content %}
   <h1>Реєстрація</h1>
   {% if form.errors %}
-    <p style="color:red">Неправильно введені дані</p>
+    <p style="color:red">
+      Неправильно введені дані
+    </p>
   {% endif %}
+
   <form action="{% url 'registration' %}" method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}

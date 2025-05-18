@@ -6,9 +6,7 @@ from django.urls import path, include
 from django.conf import settings
 
 from catalog.views import ProductListView, RegistrationView
-from military_gear_catalog.views import (
-    contacts_view, how_to_order_view, about_us_view
-)
+from military_gear_catalog.views import contacts_view, how_to_order_view, about_us_view
 
 urlpatterns = ([
         path("", ProductListView.as_view(), name="product-list"),
@@ -23,7 +21,6 @@ urlpatterns = ([
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 )
-
 
 if settings.DEBUG:
     import debug_toolbar

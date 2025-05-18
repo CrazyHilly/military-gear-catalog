@@ -10,12 +10,14 @@
   {% if form.errors %}
     <p style="color:red">Неправильно введені дані</p>
   {% endif %}
+
   <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit" value="Увійти" class="btn btn-primary">
     <input type="hidden" name="next" value="{{ next }}">
-    <a href="{% url 'registration' %}{% if next %}?next={{ next }}{% endif %}" class="btn btn-secondary">
+    <a href="{% url 'registration' %}{% if next %}?next={{ next }}{% endif %}" 
+       class="btn btn-secondary">
       Зареєструватись
     </a>
   </form>
