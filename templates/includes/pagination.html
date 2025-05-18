@@ -1,18 +1,20 @@
 {% load query_transform %}  
 {% if is_paginated %}
   <ul class="pagination">
+
     {% if page_obj.has_previous %}
       <li class="page-item">
         {% if is_paginated %}
-          <a href=
-            "?{% query_transform request page=page_obj.previous_page_number %}" 
-            class="page-link">
+          <a href="?{% query_transform request page=page_obj.previous_page_number %}" 
+             class="page-link">
             назад
           </a>
+          
         {% else %}
           <a href="#" class="page-link">1</a>
         {% endif %}  
       </li>
+
     {% else %} 
       <li class="page-item disabled">
         <a href="#" class="page-link">назад</a>
@@ -29,13 +31,15 @@
       <li class="page-item">
         <a href="?{% query_transform request page=page_obj.next_page_number %}" 
            class="page-link">
-           вперед
+          вперед
         </a>
       </li>
+
     {% else %} 
       <li class="page-item disabled">
         <a href="#" class="page-link">вперед</a>
       </li>
     {% endif %}
+
   </ul>
 {% endif %}

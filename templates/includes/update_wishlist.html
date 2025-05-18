@@ -5,13 +5,16 @@
     <a href="{% update_wishlist_url product 'add' %}">
       <img class="shield-icon" 
            src="/static/images/shield-transparent.png" 
-           alt="Додати до списку бажань">
+           alt="Додати до списку бажань"
+      >
     </a>
+
   {% else %}
     <a href="{% update_wishlist_url product %}">
       <img class="shield-icon" 
            src="/static/images/shield-solid.png" 
-           alt="Видалити зі списку бажань">
+           alt="Видалити зі списку бажань"
+      >
     </a>
   {% endif %}
 {% endwith %}
