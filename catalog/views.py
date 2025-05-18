@@ -32,7 +32,7 @@ class ProductListView(generic.ListView):
             )
         return queryset
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         search_input = self.request.GET.get("search_input", "")
         context["search_form"] = ProductSearchForm(
@@ -72,7 +72,7 @@ class CountryProductsListView(ProductListView):
 class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
 
-    def get_object(self, queryset=None):
+    def get_object(self):
         return self.request.user
 
 
@@ -82,7 +82,7 @@ class CustomerUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "catalog/customer_update.html"
     success_url = reverse_lazy("catalog:customer-detail")
 
-    def get_object(self, queryset=None):
+    def get_object(self):
         return self.request.user
     
 
@@ -129,6 +129,4 @@ def update_wishlist(request, product_number):
 @xframe_options_exempt
 def product_image_detail_view(request, image_pk):
     image = get_object_or_404(ProductImage, pk=image_pk)
-    return render(
-        request, "catalog/product_image_detail.html", {"image": image}
-        )
+    return render(request, "catalog/product_image_detail.html", {"image": image})
