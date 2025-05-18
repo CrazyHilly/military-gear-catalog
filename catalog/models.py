@@ -95,16 +95,15 @@ def product_image_path(instance, filename):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="images"
-    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to=product_image_path)
     is_main = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.is_main:
             previous_main_image = ProductImage.objects.filter(
-                product=self.product, is_main=True
+                product=self.product, 
+                is_main=True
                 )
             previous_main_image.exclude(pk=self.pk).update(is_main=False)
         super().save(*args, **kwargs)

@@ -7,17 +7,13 @@ class ProductSearchForm(forms.Form):
         max_length=100,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={"placeholder": "Шукати товар"}
-        )
+        widget=forms.TextInput(attrs={"placeholder": "Шукати товар"})
     )
 
 
 class RegistrationForm(forms.ModelForm):
     password1 = forms.CharField(label="Пароль", widget=forms.PasswordInput)
-    password2 = forms.CharField(
-        label="Підтвердіть пароль", widget=forms.PasswordInput
-        )
+    password2 = forms.CharField(label="Підтвердіть пароль", widget=forms.PasswordInput)
 
     class Meta:
         model = get_user_model()
