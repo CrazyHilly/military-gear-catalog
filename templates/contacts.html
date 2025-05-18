@@ -5,40 +5,60 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Контакти</h2>
+  <h2>
+    Контакти
+  </h2>
   <br>
-  <strong>Номер телефону:</strong>
+
+  <h6>
+    Номер телефону:
+  </h6>
   <div class="pointer">
     <img class="call-out-icon" alt="Київстар" src="/static/images/kyivstar.png">
     <img class="call-out-icon" alt="Viber" src="/static/images/viber.png">
-    <a class="hover-bold" href="tel:+380686266779">+38 (068) 626-67-79</a>
+    <a class="hover-bold" href="tel:+380686266779">
+      +38 (068) 626-67-79
+    </a>
   </div>
   <br>
 
-  <strong>Адреса:</strong>
+  <h6 class="mb-0 mt-2">
+    Адреса:
+  </h6>
   <address class="indented">
     Ринок "Чагарі"<br>
     вул. Пилипа Орлика, 18а<br>
-    <strong>м. Дрогобич</strong>, Львівська обл.<br>
+    <span class="bold">м. Дрогобич</span>, Львівська обл.<br>
   </address>
 
-  <strong>Як нас знайти:</strong>
+  <h6 class="mb-0 mt-2">
+    Як нас знайти:
+  </h6>
   <div class="indented">
-    <details open class="mb-3">
-      <summary class="underlined">Вхід на ринок з вул. П. Орлика:</summary>
-      <p class="indented mb-1">
+    <details closed class="mb-3">
+      <summary class="underlined">
+        Вхід на ринок з вул. П. Орлика
+      </summary>
+      <p class="ml-3 mt-2 mb-3">
         За брамою праворуч. Магазин знаходиться за магазином з килимами.
       </p>
-    <img class="store-location-image" alt="Шлях до магазину з П. Орлика"
-      src="/static/images/store_location/pylypa_orlyka.png">
+      <img class="store-location-image" 
+         alt="Шлях до магазину з П. Орлика"
+         src="/static/images/store_location/pylypa_orlyka.png"
+      >
     </details>
-    <details open>
-      <summary class="underlined">Вхід на ринок з вул. В. Великого:</summary>
-      <p class="indented mb-1">
+
+    <details closed>
+      <summary class="underlined">
+        Вхід на ринок з вул. В. Великого
+      </summary>
+      <p class="ml-3 mt-2 mb-3">
         За брамою прямо до кінця алеї -> ліворуч до кінця алеї.
       </p>
-    <img class="store-location-image" alt="Шлях до магазину з В. Великого"
-      src="/static/images/store_location/volodymyra_velykoho.png">
+      <img class="store-location-image" 
+           alt="Шлях до магазину з В. Великого"
+           src="/static/images/store_location/volodymyra_velykoho.png"
+      >
     </details>
   </div>
 {% endblock %}
