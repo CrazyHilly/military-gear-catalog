@@ -5,17 +5,28 @@
 {% endblock %}
 
 {% block content %}
-  <div class="product-grid-display">
-    <div class="product-card-display">
-      <img class="product-image-display" alt="{{ product.name }}"
-        {% if product.main_image %}
-          src="{{ product.main_image.image.url }}"
-        {% else %}
-          src="{{ product.images.first.image.url }}"
-        {% endif %}
-      >
+  <div class="product-grid-detail">
+
+    <div class="thumbnails">
+      <ul class="no-bullet">
+        {% for image in product.images.all %}
+          <li class="mb-2">
+            <a href="{% url 'catalog:product-image-detail' image.pk %}" target="imageFrame">
+              <img src="{{ image.image.url }}" alt="{{ product }}" class="thumbnail">
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
-    <ul class="no-bullet">
+
+    <iframe class="product-image-detail"
+            name="imageFrame"
+            src="{% url 'catalog:product-image-detail' product.main_image.pk %}"
+            scrolling="no"
+            frameborder="0"
+    ></iframe>
+
+    <ul class="no-bullet product-info-display">
       <li>
         <h2 class="mb-0">{{ product.name }}</h2>
       </li>
@@ -25,17 +36,21 @@
       <li class="bold mt-2 mb-2">
         {{ product.price_low }}-{{ product.price_high }} грн
       </li>
+
       {% if product.country %}
         <li>{{ product.country }}</li>
       {% endif %}
+
       {% if product.description %}
         <li>{{ product.description }}</li>
       {% endif %}
+
       {% if product.available %}
         <li>Є в наявності</li>
       {% else %}
         <li class="text-color-grey">Немає в наявності</li>
       {% endif %}
+
       <li>
         {% block update_wishlist %}
           <div class="detail-view mt-2">
@@ -44,5 +59,6 @@
         {% endblock %}
       </li>
     </ul>
+
   </div>
 {% endblock %}

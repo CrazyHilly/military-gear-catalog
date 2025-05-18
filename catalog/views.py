@@ -2,12 +2,13 @@ from django.contrib.auth import get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from catalog.forms import ProductSearchForm, RegistrationForm
-from catalog.models import Product, Clothing, Footwear, Accessory, Country
+from catalog.models import Product, Clothing, Footwear, Accessory, Country, ProductImage
 
 
 class ProductDetailView(generic.DetailView):
@@ -126,3 +127,11 @@ def update_wishlist(request, product_number):
             customer.wishlist.add(product)
             
     return redirect(request.GET.get("next", "/"))
+
+
+@xframe_options_exempt
+def product_image_detail_view(request, image_pk):
+    image = get_object_or_404(ProductImage, pk=image_pk)
+    return render(
+        request, "catalog/product_image_detail.html", {"image": image}
+        )

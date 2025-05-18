@@ -166,6 +166,7 @@ body {
 .detail-view .shield-icon {
     width: 1.6em;
     height: 1.4em;
+    margin-left: 0;
 }
 
 .exit-icon {
@@ -235,25 +236,43 @@ body {
   opacity: 0.45;
 }
 
-.product-grid-display {
+.product-grid-detail {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+  grid-template-columns: 100px 600px 1fr;
   gap: 40px;
   padding: 15px;
+  align-items: start;
 }
 
-.product-card-display {
-  background-color: #fff;
-  text-align: right;
-  overflow: hidden;
-}
-
-.product-image-display {
-  width: 100%;
-  max-height: 440px;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
+.product-image-detail {
+  border-radius: 4px;
   background-color: transparent;
+  width: 100%;
+  height: 600px;
+  display: block;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  background-color: #fff;
+  border: 1px solid var(--primary-shadow-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.thumbnail:hover {
+  box-shadow: 0 0 8px 0.1rem var(--primary-shadow-color);
+  transform: scale(1.01);
+  z-index: 1;
+}
+
+.thumbnail:active {
+  border: 1px solid var(--primary-color);
+  transform: scale(1);
+  z-index: 1;
 }
 
 .page-link, .page-link:hover {
@@ -308,5 +327,3 @@ body {
   height: auto;
   margin-bottom: 30px;
 }
-
-.details

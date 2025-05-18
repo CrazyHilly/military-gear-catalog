@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/product_image_detail.css' %}">
+  </head>
+
+  <body>
+    <img src="{{ image.image.url }}" alt="Фото товару">
+  </body>
+</html>

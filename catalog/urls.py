@@ -4,7 +4,7 @@ from catalog.views import (
     ProductListView, ClothingListView, FootwearListView, AccessoryListView,
     ProductDetailView, CountryListView, CountryProductsListView,
     CustomerDetailView, CustomerWishlistView, update_wishlist,
-    CustomerUpdateView
+    CustomerUpdateView, product_image_detail_view
 )
 
 urlpatterns = [
@@ -19,6 +19,7 @@ urlpatterns = [
     path("customer/", CustomerDetailView.as_view(), name="customer-detail"),
     path("customer/update", CustomerUpdateView.as_view(), name="customer-update"),
     path("customer/wishlist/", CustomerWishlistView.as_view(), name="customer-wish-list"),
+    path("product-image/<int:image_pk>/", product_image_detail_view, name="product-image-detail"),
 ]
 
 app_name = "catalog"

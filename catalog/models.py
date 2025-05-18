@@ -68,6 +68,8 @@ class Product(models.Model):
     @property
     def main_image(self):
         main_image = self.images.filter(is_main=True).first()
+        if not main_image:
+            main_image = self.images.first()
         return main_image
 
 
