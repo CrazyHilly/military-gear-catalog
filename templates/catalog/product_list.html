@@ -26,26 +26,39 @@
           {% block update_wishlist %}
             {% include "includes/update_wishlist.html" %}
           {% endblock %}
+
           <a href="{{ product.get_absolute_url }}">
             <h6>{{ product.name }}</h6>
-            <img class="product-image-list mb-2" alt="{{ product.name }}"
-                src="{{ product.main_image.image.url }}">
+            <img class="product-image-list mb-2" 
+                 alt="{{ product.name }}"
+                 src="{{ product.main_image.image.url }}"
+            >
           </a>
+
           {% if product.country %}
             <p class="mb-0">{{ product.country }}</p>
           {% endif %}
-          <p class="semi-bold">{{ product.price_low }}-{{ product.price_high }} грн</p>
+
+          <p class="semi-bold">
+            {{ product.price_low }}-{{ product.price_high }} грн
+          </p>
+
           {% if product.description %}
             <p>{{ product.description }}</p>
           {% endif %}
+          
           <p class="font-size-09 text-color-grey">
             Код товару: {{ product.product_number }}
           </p>
         </div>
       {% endfor %}
     </div>
+
   {% else %}
     <br>
-    <p class="text-color-grey">Немає товарів</p>
+    <p class="text-color-grey">
+      Немає товарів
+    </p>
   {% endif %}
+
 {% endblock %}
