@@ -9,7 +9,7 @@ from catalog.managers import CustomerManager
 
 class Country(models.Model):
     en_name = models.CharField(max_length=60, unique=True)
-    ua_name = models.CharField(max_length=60, unique=True)
+    ua_name = models.CharField(max_length=60, unique=True, verbose_name="Назва")
 
     def __str__(self):
         return self.ua_name
@@ -20,28 +20,35 @@ class Country(models.Model):
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
-        ("1", "Clothing"),
-        ("2", "Footwear"),
-        ("3", "Accessory"),
+        ("1", "Одяг"),
+        ("2", "Взуття"),
+        ("3", "Аксесуари"),
     ]
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name="Назва")
     country = models.ForeignKey(
         Country,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="products"
+        related_name="products",
+        verbose_name="Країна", 
     )
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True, verbose_name="Опис")
     price_low = models.PositiveIntegerField(
-        validators=[MaxValueValidator(10000)]
+        validators=[MaxValueValidator(10000)], 
+        verbose_name="Ціна від"
     )
     price_high = models.PositiveIntegerField(
-        validators=[MaxValueValidator(10000)]
+        validators=[MaxValueValidator(10000)], 
+        verbose_name="Ціна до"
     )
-    available = models.BooleanField(default=True)
-    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES)
-    product_number = models.IntegerField(unique=True)
+    available = models.BooleanField(default=True, verbose_name="Наявність")
+    category = models.CharField(
+        max_length=2, 
+        choices=CATEGORY_CHOICES, 
+        verbose_name="Категорія"
+        )
+    product_number = models.IntegerField(unique=True, verbose_name="Код товару")
     slug = models.SlugField(null=False)
 
     def __str__(self):
@@ -64,6 +71,8 @@ class Product(models.Model):
 
     class Meta:
         ordering = ["-available", "id"]
+        verbose_name = "товар"
+        verbose_name_plural = "товари"
         
     @property
     def main_image(self):
@@ -95,9 +104,14 @@ def product_image_path(instance, filename):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to=product_image_path)
-    is_main = models.BooleanField(default=False)
+    product = models.ForeignKey(
+        Product, 
+        on_delete=models.CASCADE, 
+        related_name="images", 
+        verbose_name="Товар"
+        )
+    image = models.ImageField(upload_to=product_image_path, verbose_name="Зображення")
+    is_main = models.BooleanField(default=False, verbose_name="Основне")
 
     def save(self, *args, **kwargs):
         if self.is_main:
