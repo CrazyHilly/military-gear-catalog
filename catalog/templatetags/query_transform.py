@@ -24,7 +24,7 @@ def update_wishlist_url(context, product, action=None):
         "catalog:update-wishlist", 
         kwargs={"product_number": product_number}
         )
-    next_path = context["request"].path
+    next_path = context["request"].get_full_path() + f"#{product.product_number}"
 
     query_params = {"next": next_path}
     if action:

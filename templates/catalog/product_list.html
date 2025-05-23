@@ -22,7 +22,9 @@
   {% if object_list %}
     <div class="product-grid-list">
       {% for product in object_list %}
-        <div class="product-card-list {% if not product.available %}unavailable{% endif %}">
+        <div class="product-card-list {% if not product.available %}unavailable{% endif %}"
+             id="{{ product.product_number }}"
+        >
           {% block update_wishlist %}
             {% include "includes/update_wishlist.html" %}
           {% endblock %}
