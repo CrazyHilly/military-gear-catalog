@@ -47,9 +47,15 @@
             <p>{{ product.description }}</p>
           {% endif %}
           
-          <p class="font-size-09 text-color-grey">
-            Код товару: {{ product.product_number }}
-          </p>
+          <div class="font-size-09">
+            <p class="text-color-grey mb-0">Код товару: {{ product.product_number }}</p>
+            {% if product.available %}
+              <p>В наявності</p>
+            {% else %}
+              <p>Немає в наявності</p>
+            {% endif %}
+          </div>
+
         </div>
       {% endfor %}
     </div>
