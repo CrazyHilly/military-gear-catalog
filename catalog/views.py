@@ -18,11 +18,23 @@ class ProductDetailView(generic.DetailView):
 class ProductListView(generic.ListView):
     model = Product
     paginate_by = 12
+    default_search_scope = "category"
+
+    def get_search_scope(self):
+        if "search_scope" in self.request.GET:
+            search_scope = self.request.GET.get("search_scope")
+            self.request.session["search_scope"] = search_scope
+        return self.request.session.get("search_scope", self.default_search_scope)
 
     def get_queryset(self):
         queryset = super().get_queryset()
         search_input = self.request.GET.get("search_input")
+        search_scope = self.get_search_scope()
+        
         if search_input:
+            if search_scope == "global":
+                queryset = Product.objects.all()
+
             queryset = queryset.filter(
                 Q(name__icontains=search_input) |
                 Q(country__ua_name__icontains=search_input) |
@@ -35,9 +47,12 @@ class ProductListView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         search_input = self.request.GET.get("search_input", "")
+        search_scope = self.get_search_scope()
+
         context["search_form"] = ProductSearchForm(
-            initial={"search_input": search_input}
+            initial={"search_input": search_input, "search_scope": search_scope}
         )
+        context["search_scope"] = search_scope
         return context
 
 
@@ -65,6 +80,9 @@ class CountryProductsListView(ProductListView):
     template_name = "catalog/product_list.html"
 
     def get_queryset(self):
+        if self.request.GET.get("search_scope") == "global":
+            return super().get_queryset()
+        
         country = get_object_or_404(Country, en_name=self.kwargs.get("name"))
         return super().get_queryset().filter(country=country)
 

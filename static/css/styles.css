@@ -28,12 +28,20 @@ body {
     font-size: 0.8em;
 }
 
+.font-size-07 {
+    font-size: 0.75em;
+}
+
 .semi-bold {
   font-weight: 500;
 }
 
 .bold {
   font-weight: bold;
+}
+
+.text-color-darkgrey {
+    color: var(--secondary-color);
 }
 
 .text-color-grey {
@@ -122,11 +130,40 @@ body {
 
 .form-control {
     border-color: var(--border-color);
+    width: 600px;
 }
 
 .form-control:focus {
     box-shadow: 0 0 2px .2rem var(--primary-shadow-color);
     border-color: var(--secondary-color);
+}
+
+.radio input[type="radio"] {
+  display: none;
+}
+
+.radio label {
+  position: relative;
+  padding-left: 20px;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-right: 10px;
+  line-height: 15px;
+}
+
+.radio label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 12px;
+  height: 12px;
+  background-image: url("/static/images/shield-transparent-radio.png");
+  background-size: cover;
+}
+
+.radio input[type="radio"]:checked + label::before {
+  background-image: url("/static/images/shield-solid-radio.png");
 }
 
 .add-button {

@@ -7,7 +7,10 @@ class ProductSearchForm(forms.Form):
         max_length=100,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Шукати товар"})
+        widget=forms.TextInput(attrs={
+            "placeholder": "Пошук товарів", 
+            "style": "width: 500px;"
+            })
     )
 
 

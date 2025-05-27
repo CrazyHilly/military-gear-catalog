@@ -6,17 +6,39 @@
 {% endblock %}
 
 {% block content %}
-  <form class="form-inline m-0" method="get" action="">
-    {{ search_form|crispy }}
-    <input 
-      class="btn btn-primary mr-1 ml-1" 
-      type="submit" 
-      value="Пошук" 
-      autocomplete="off-word"
-    >
-    <a class="btn btn-secondary" href="{% url 'catalog:product-list' %}">
-      Очистити
-    </a>
+  <form method="get" action="" class="mb-0">
+    <div class="form-inline m-0 ">
+      {{ search_form|crispy }}
+      <input class="btn btn-primary mr-1 ml-1" 
+             type="submit" 
+             value="Пошук" 
+             autocomplete="off-word"
+      >
+      <a class="btn btn-secondary" href="{% url 'catalog:product-list' %}">
+        Очистити
+      </a>
+    </div>
+
+    <div class="font-size-07 text-color-darkgrey radio">
+      <input type="radio" 
+             name="search_scope" 
+             id="scope-category" 
+             value="category" 
+             {% if search_scope == "category" %}checked{% endif %}
+      >
+      <label class="form-check-label" for="scope-category">
+        Шукати в обраній категорії
+      </label>
+     <input type="radio" 
+             name="search_scope" 
+             id="scope-global" 
+             value="global" 
+             {% if search_scope == "global" %}checked{% endif %}
+      >
+      <label class="form-check-label" for="scope-global">
+        Шукати по сайту
+      </label>
+    </div>
   </form>
 
   {% if object_list %}
