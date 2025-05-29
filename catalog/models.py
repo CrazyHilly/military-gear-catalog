@@ -9,7 +9,7 @@ from catalog.managers import CustomerManager
 
 class Country(models.Model):
     en_name = models.CharField(max_length=60, unique=True)
-    ua_name = models.CharField(max_length=60, unique=True, verbose_name="Назва")
+    ua_name = models.CharField(max_length=60, unique=True, verbose_name="назва")
 
     def __str__(self):
         return self.ua_name
@@ -24,31 +24,31 @@ class Product(models.Model):
         ("2", "Взуття"),
         ("3", "Аксесуари"),
     ]
-    name = models.CharField(max_length=100, verbose_name="Назва")
+    name = models.CharField(max_length=100, verbose_name="назва")
     country = models.ForeignKey(
         Country,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="products",
-        verbose_name="Країна", 
+        verbose_name="країна", 
     )
-    description = models.TextField(blank=True, null=True, verbose_name="Опис")
+    description = models.TextField(blank=True, null=True, verbose_name="опис")
     price_low = models.PositiveIntegerField(
         validators=[MaxValueValidator(10000)], 
-        verbose_name="Ціна від"
+        verbose_name="ціна від"
     )
     price_high = models.PositiveIntegerField(
         validators=[MaxValueValidator(10000)], 
-        verbose_name="Ціна до"
+        verbose_name="ціна до"
     )
-    available = models.BooleanField(default=True, verbose_name="Наявність")
+    available = models.BooleanField(default=True, verbose_name="в наявності")
     category = models.CharField(
         max_length=2, 
         choices=CATEGORY_CHOICES, 
-        verbose_name="Категорія"
+        verbose_name="категорія"
         )
-    product_number = models.IntegerField(unique=True, verbose_name="Код товару")
+    product_number = models.IntegerField(unique=True, verbose_name="код товару")
     slug = models.SlugField(null=False)
 
     def __str__(self):
@@ -108,10 +108,10 @@ class ProductImage(models.Model):
         Product, 
         on_delete=models.CASCADE, 
         related_name="images", 
-        verbose_name="Товар"
+        verbose_name="товар"
         )
-    image = models.ImageField(upload_to=product_image_path, verbose_name="Зображення")
-    is_main = models.BooleanField(default=False, verbose_name="Основне")
+    image = models.ImageField(upload_to=product_image_path, verbose_name="зображення")
+    is_main = models.BooleanField(default=False, verbose_name="основне зображення")
 
     def save(self, *args, **kwargs):
         if self.is_main:
@@ -124,6 +124,9 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Зображення: {self.product}"
+    
+    class Meta:
+        verbose_name = verbose_name_plural = "зображення"
 
 
 class Customer(AbstractUser):
