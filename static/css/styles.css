@@ -20,6 +20,10 @@ body {
     margin-top: 20px;
 }
 
+.heading {
+    margin-bottom: 20px;
+}
+
 .font-size-09 {
     font-size: 0.9em;
 }
@@ -183,7 +187,8 @@ body {
 .call-out-icon {
     width: 1.5em;
     height: 1.3em;
-    padding-right: 3px;
+    padding-right: 2px;
+    margin-bottom: 5px;
 }
 
 .shield-icon {
