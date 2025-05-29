@@ -5,22 +5,24 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Як зробити замовлення</h2>
-  <br>
+  <h2 class="heading">
+    Як зробити замовлення
+  </h2>
+
+  <p class="mb-4">
+    Кожна одиниця товару має різний стан зношеності, тому в каталозі вказано приблизну вартість товарів.<br>
+    Точна вартість залежить від стану обраного товару - деталі потрібно узгоджувати.
+  </p>
   
-  <p>
-    Для замовлення товарів заходьте в магазин, пишіть на Viber або телефонуйте 
-    за номером телефону:
+  <p class="mb-2">
+    Для уточнень або замовлення товарів заходьте в <b><a href="{% url 'contacts' %}">магазин</a></b>, пишіть на Viber або телефонуйте:
   </p>
 
-  <div class="pointer">
-    <img class="call-out-icon" alt="Київстар" src="/static/images/kyivstar.png">
-    <img class="call-out-icon" alt="Viber" src="/static/images/viber.png">
-    <a class="hover-bold" href="tel:+380686266779">
-      +38 (068) 626-67-79
-    </a>
+  <div>
+    {% block phone-numbers %}
+      {% include "includes/phone_numbers.html" %}
+    {% endblock %}
   </div>
-  <br>
 
-  <p>Замовлення можемо надіслати Укрпоштою або Новою Поштою.</p>
+  <p class="mt-4">Замовлення можемо надіслати Укрпоштою або Новою Поштою.</p>
 {% endblock %}
