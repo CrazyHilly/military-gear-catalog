@@ -93,17 +93,29 @@ class Clothing(Product):
         self.category = "1"
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name = "одяг"
+        verbose_name_plural = "одяг"
+
 
 class Footwear(Product):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.category = "2"
 
+    class Meta:
+        verbose_name = "взуття"
+        verbose_name_plural = "взуття"
+
 
 class Accessory(Product):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.category = "3"
+
+    class Meta:
+        verbose_name = "аксесуари"
+        verbose_name_plural = "аксесуари"
 
 
 def product_image_path(instance, filename):
@@ -134,7 +146,8 @@ class ProductImage(models.Model):
         return f"Зображення: {self.product}"
     
     class Meta:
-        verbose_name = verbose_name_plural = "зображення"
+        verbose_name = "зображення"
+        verbose_name_plural = "зображення"
 
 
 class Customer(AbstractUser):
