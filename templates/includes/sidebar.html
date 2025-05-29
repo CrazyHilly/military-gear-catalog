@@ -98,6 +98,14 @@
   <br>
 
   <li>
+    <a href="{% url 'about-us' %}"
+       class="{% if request.resolver_match.view_name == 'about-us' %}
+              sidebar-nav-active{% endif %}">
+      Про нас
+    </a>
+  </li>
+  
+  <li>
     <a href="{% url 'how-to-order' %}"
        class="{% if request.resolver_match.view_name == 'how-to-order' %}
               sidebar-nav-active{% endif %}">
@@ -110,14 +118,6 @@
        class="{% if request.resolver_match.view_name == 'contacts' %}
               sidebar-nav-active{% endif %}">
       Контакти
-    </a>
-  </li>
-
-  <li>
-    <a href="{% url 'about-us' %}"
-       class="{% if request.resolver_match.view_name == 'about-us' %}
-              sidebar-nav-active{% endif %}">
-      Про нас
     </a>
   </li>
 </ul>
