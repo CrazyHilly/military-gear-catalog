@@ -43,21 +43,27 @@ class ProductAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ["product_number"]
+            return ["product_number", "category"]
         return []
 
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
+        fields.remove("category")
 
         if not obj:
             fields = [f for f in fields if f != "product_number"]
-
-        if not self.show_category and "category" in fields:
-            fields.remove("category")
             
         return fields
+    
+    def save_model(self, request, obj, form, change):
+        if not obj.category:
+            obj.category = form.cleaned_data.get("category")
+        super().save_model(request, obj, form, change)
 
     actions = ["change_availability"]
+
+    def has_add_permission(self, request):
+        return False
 
     @admin.action(description=_("Змінити наявність"))
     def change_availability(self, request, queryset):
@@ -77,6 +83,9 @@ class ClothingAdmin(ProductAdmin):
     def save_model(self, request, obj, form, change):
         obj.category = self.category
         super().save_model(request, obj, form, change)
+
+    def has_add_permission(self, request):
+        return True
     
 
 @admin.register(Footwear)
@@ -90,6 +99,9 @@ class FootwearAdmin(ProductAdmin):
     def save_model(self, request, obj, form, change):
         obj.category = self.category
         super().save_model(request, obj, form, change)
+
+    def has_add_permission(self, request):
+        return True
     
 
 @admin.register(Accessory)
@@ -103,6 +115,9 @@ class AccessoryAdmin(ProductAdmin):
     def save_model(self, request, obj, form, change):
         obj.category = self.category
         super().save_model(request, obj, form, change)
+
+    def has_add_permission(self, request):
+        return True
 
 
 admin.site.unregister(Group)
