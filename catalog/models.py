@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.urls import reverse
@@ -51,33 +52,40 @@ class Product(models.Model):
     product_number = models.IntegerField(unique=True, verbose_name="код товару")
     slug = models.SlugField(null=False)
 
-    def __str__(self):
-        return f"{self.product_number} {self.name}"
-
-    def save(self, *args, **kwargs):
-        if not self.product_number:
-            last_product = Product.objects.filter(category=self.category).last()
-            if last_product:
-                self.product_number = last_product.product_number + 1
-            else:
-                self.product_number = int(self.category + "0001")
-        if not self.slug:
-            slug_name = f"{self.product_number}-{self.name}"
-            self.slug = slugify(slug_name, separator="-", lowercase=True)
-        super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse("catalog:product-detail", args=[self.slug])
-
-    class Meta:
-        ordering = ["-available", "id"]
-        verbose_name = "товар"
-        verbose_name_plural = "товари"
-        
     @property
     def main_image(self):
         main_image = self.images.filter(is_main=True).first()
         return main_image if main_image else self.images.first()
+
+    def __str__(self):
+        return f"{self.product_number} {self.name}"
+    
+    class Meta:
+        ordering = ["-available", "id"]
+        verbose_name = "товар"
+        verbose_name_plural = "товари"
+    
+    def clean(self):
+        if self.price_low > self.price_high:
+            raise ValidationError("Мінімальна ціна має бути нижчою від максимальної.")
+
+    def save(self, *args, **kwargs):
+        if not self.product_number:
+            product_objects = Product.objects.filter(category=self.category)
+            last_product = product_objects.order_by("product_number").last()
+            if last_product:
+                self.product_number = last_product.product_number + 1
+            else:
+                self.product_number = int(self.category + "0001")
+
+        if not self.slug:
+            slug_name = f"{self.product_number}-{self.name}"
+            self.slug = slugify(slug_name, separator="-", lowercase=True)
+
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("catalog:product-detail", args=[self.slug])
 
 
 class Clothing(Product):
