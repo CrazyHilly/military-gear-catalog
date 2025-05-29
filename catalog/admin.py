@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 
-from catalog.models import Product, ProductImage
+from catalog.models import Product, Clothing, Footwear, Accessory, ProductImage
 
 
 class ProductImageInline(admin.TabularInline):
@@ -58,6 +58,57 @@ class ProductAdmin(admin.ModelAdmin):
         for item in queryset:
             item.available=not item.available
             item.save()
+
+
+@admin.register(Clothing)
+class ClothingAdmin(ProductAdmin):
+    category = "1"
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(category=self.category)
+
+    def get_fields(self, request, obj=None):
+        fields = list(super().get_fields(request, obj))
+        fields.remove("category")
+        return fields
+
+    def save_model(self, request, obj, form, change):
+        obj.category = self.category
+        super().save_model(request, obj, form, change)
+    
+
+@admin.register(Footwear)
+class FootwearAdmin(ProductAdmin):
+    category = "2"
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(category=self.category)
+
+    def get_fields(self, request, obj=None):
+        fields = list(super().get_fields(request, obj))
+        fields.remove("category")
+        return fields
+
+    def save_model(self, request, obj, form, change):
+        obj.category = self.category
+        super().save_model(request, obj, form, change)
+    
+
+@admin.register(Accessory)
+class AccessoryAdmin(ProductAdmin):
+    category = "3"
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(category=self.category)
+
+    def get_fields(self, request, obj=None):
+        fields = list(super().get_fields(request, obj))
+        fields.remove("category")
+        return fields
+
+    def save_model(self, request, obj, form, change):
+        obj.category = self.category
+        super().save_model(request, obj, form, change)
 
 
 admin.site.unregister(Group)
