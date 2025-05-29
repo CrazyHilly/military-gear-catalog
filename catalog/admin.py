@@ -32,6 +32,7 @@ class ProductAdmin(admin.ModelAdmin):
         ]
     list_filter = ["available", "country__ua_name", "category"]
     inlines = [ProductImageInline]
+    show_category = True
 
     def display_category(self, obj):
         return f"{obj.category} - {obj.get_category_display()}"
@@ -47,8 +48,13 @@ class ProductAdmin(admin.ModelAdmin):
 
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
+
         if not obj:
             fields = [f for f in fields if f != "product_number"]
+
+        if not self.show_category and "category" in fields:
+            fields.remove("category")
+            
         return fields
 
     actions = ["change_availability"]
@@ -63,14 +69,10 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Clothing)
 class ClothingAdmin(ProductAdmin):
     category = "1"
+    show_category = False
 
     def get_queryset(self, request):
         return super().get_queryset(request).filter(category=self.category)
-
-    def get_fields(self, request, obj=None):
-        fields = list(super().get_fields(request, obj))
-        fields.remove("category")
-        return fields
 
     def save_model(self, request, obj, form, change):
         obj.category = self.category
@@ -80,14 +82,10 @@ class ClothingAdmin(ProductAdmin):
 @admin.register(Footwear)
 class FootwearAdmin(ProductAdmin):
     category = "2"
+    show_category = False
 
     def get_queryset(self, request):
         return super().get_queryset(request).filter(category=self.category)
-
-    def get_fields(self, request, obj=None):
-        fields = list(super().get_fields(request, obj))
-        fields.remove("category")
-        return fields
 
     def save_model(self, request, obj, form, change):
         obj.category = self.category
@@ -97,14 +95,10 @@ class FootwearAdmin(ProductAdmin):
 @admin.register(Accessory)
 class AccessoryAdmin(ProductAdmin):
     category = "3"
+    show_category = False
 
     def get_queryset(self, request):
         return super().get_queryset(request).filter(category=self.category)
-
-    def get_fields(self, request, obj=None):
-        fields = list(super().get_fields(request, obj))
-        fields.remove("category")
-        return fields
 
     def save_model(self, request, obj, form, change):
         obj.category = self.category
