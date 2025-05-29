@@ -5,31 +5,42 @@
 {% endblock %}
 
 {% block content %}
-  <h2>
+  <h2 class="heading">
     Контакти
   </h2>
-  <br>
 
   <h6>
     Номер телефону:
   </h6>
-  <div class="pointer">
-    <img class="call-out-icon" alt="Київстар" src="/static/images/kyivstar.png">
-    <img class="call-out-icon" alt="Viber" src="/static/images/viber.png">
-    <a class="hover-bold" href="tel:+380686266779">
-      +38 (068) 626-67-79
-    </a>
+  <div class="indented">
+    {% block phone-numbers %}
+      {% include "includes/phone_numbers.html" %}
+    {% endblock %}
   </div>
-  <br>
 
-  <h6 class="mb-0 mt-2">
+  <h6 class="mb-0">
     Адреса:
   </h6>
   <address class="indented">
     Ринок "Чагарі"<br>
     вул. Пилипа Орлика, 18а<br>
-    <span class="bold">м. Дрогобич</span>, Львівська обл.<br>
+    <b>м. Дрогобич</b>, Львівська обл.<br>
   </address>
+
+  <h6 class="mb-0 mt-2">
+    Години роботи магазину:
+  </h6>
+  <div class="indented">
+    <p class="mb-2">
+      Пн - вихідний<br>
+      <b>Вт-Сб - 10:00-14:00</b><br>
+      Нд - вихідний<br>
+    </p>
+    <p>
+      Магазин знаходиться на ринку, тому години роботи відповідають часу роботи ринку.<br>
+      Якщо є вагомі причини, магазин можна відкрити в інший час, але це потрібно узгоджувати індивідуально.
+    </p>
+  </div>
 
   <h6 class="mb-0 mt-2">
     Як нас знайти:
