@@ -1,8 +1,11 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
+from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
 
-from catalog.models import Product, Clothing, Footwear, Accessory, ProductImage, Country
+from catalog.models import (
+    Product, Clothing, Footwear, Accessory, ProductImage, Country, Customer)
     
 
 class ProductImageInline(admin.TabularInline):
@@ -131,5 +134,120 @@ class AccessoryAdmin(ProductAdmin):
 class CountryAdmin(admin.ModelAdmin):
     list_display = ["ua_name", "en_name"]
 
+
+class WishitemsFilter(admin.SimpleListFilter):
+    title = _("списком бажань")
+    parameter_name = "wishitems"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("yes", _("Є товари")),
+            ("no", _("Немає товарів")),
+        )
+
+    def queryset(self, request, queryset):
+        queryset = queryset.annotate(wishlist_count=Count("wishlist"))
+        if self.value() == "yes":
+            return queryset.filter(wishlist_count__gt=0)
+        if self.value() == "no":
+            return queryset.filter(wishlist_count=0)
+        return queryset
+    
+
+class WishlistThroughProxy(Customer.wishlist.through):
+    class Meta:
+        proxy = True
+        verbose_name = _("товар")
+        verbose_name_plural = _("список бажань")
+
+    def __str__(self):
+        return ""
+    
+
+class WishlistInline(admin.TabularInline):
+    model = WishlistThroughProxy
+    extra = 0
+    can_delete = False
+
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+    
+
+@admin.register(Customer)
+class CustomerAdmin(UserAdmin):
+    list_display = [
+        "id", 
+        "email", 
+        "first_name", 
+        "last_name", 
+        "display_wishlist",
+        "display_is_staff", 
+        "date_joined", 
+        "last_login",
+        ]
+    search_fields = ["id", "email", "first_name", "last_name"]
+    list_filter = [
+        "date_joined", 
+        "last_login",
+        "is_staff", 
+        WishitemsFilter,
+        ]
+    readonly_fields = ["email", "date_joined", "last_login",]
+    ordering = ("id",)
+    inlines = [WishlistInline]
+
+    fieldsets = (
+        (None, {"fields": ("email", "password")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name")}),
+        (_("Permissions"), {
+            "fields": (
+                "is_active", "is_staff", "is_superuser", "groups", "user_permissions"
+                )}),
+        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            "classes": ("wide",),
+            "fields": ("email", "password1", "password2"),
+        }),
+    )
+
+    @admin.display(boolean=True, description="Персонал")
+    def display_is_staff(self, obj):
+        return obj.is_staff
+
+    def display_wishlist(self, obj):
+        wishlist = obj.wishlist.all()
+        if not wishlist:
+            return "-"
+        
+        items_num = len(wishlist)
+        str_products = "товар" if items_num == 1 else "товарів"
+        if items_num > 9:
+            short_str_wishlist = ", ".join([str(p.product_number) for p in wishlist[:7]])
+            return f"{str(items_num)} {str_products}: {short_str_wishlist}, ..."
+        
+        str_wishlist = ", ".join([str(p.product_number) for p in wishlist])
+        return f"{str(items_num)} {str_products}: {str_wishlist}"
+    
+    display_wishlist.short_description = "Список бажань"
+
+    class Media:
+        css = {
+            "all": ("css/admin.css",)
+        }
+
+    @admin.action(description=_("Змінити статус персоналу"))
+    def change_is_staff(self, request, queryset):
+        for user in queryset:
+            user.is_staff=not user.is_staff
+            user.save()
+
+    actions = ["change_is_staff"]
+        
 
 admin.site.unregister(Group)
