@@ -164,3 +164,7 @@ class Customer(AbstractUser):
 
     def __str__(self):
         return f"{self.email}, {self.first_name} {self.last_name}"
+    
+    class Meta:
+        verbose_name = "клієнт"
+        verbose_name_plural = "клієнти"
