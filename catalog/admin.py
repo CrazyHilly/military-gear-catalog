@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 
 from catalog.models import Product, Clothing, Footwear, Accessory, ProductImage
-
+    
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -36,7 +36,6 @@ class ProductAdmin(admin.ModelAdmin):
 
     def display_category(self, obj):
         return f"{obj.category} - {obj.get_category_display()}"
-    
     display_category.short_description = "Категорія"
 
     exclude = ["slug"]
@@ -60,7 +59,7 @@ class ProductAdmin(admin.ModelAdmin):
             obj.category = form.cleaned_data.get("category")
         super().save_model(request, obj, form, change)
 
-    actions = ["change_availability"]
+    actions = ["change_availability", "make_available", "make_unavailable"]
 
     def has_add_permission(self, request):
         return False
@@ -70,6 +69,14 @@ class ProductAdmin(admin.ModelAdmin):
         for item in queryset:
             item.available=not item.available
             item.save()
+
+    @admin.action(description=_("Є в наявності"))
+    def make_available(self, request, queryset):
+        queryset.update(available=True)
+
+    @admin.action(description=_("Немає в наявності"))
+    def make_unavailable(self, request, queryset):
+        queryset.update(available=False)
 
 
 @admin.register(Clothing)
