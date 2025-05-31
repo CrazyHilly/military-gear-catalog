@@ -9,7 +9,7 @@ from catalog.managers import CustomerManager
 
 
 class Country(models.Model):
-    en_name = models.CharField(max_length=60, unique=True)
+    en_name = models.CharField(max_length=60, unique=True, verbose_name="назва англійською")
     ua_name = models.CharField(max_length=60, unique=True, verbose_name="країна")
 
     def __str__(self):
@@ -17,6 +17,8 @@ class Country(models.Model):
 
     class Meta:
         ordering = ["ua_name"]
+        verbose_name = "країна"
+        verbose_name_plural = "країни"
 
 
 class Product(models.Model):
@@ -114,7 +116,7 @@ class Accessory(Product):
         self.category = "3"
 
     class Meta:
-        verbose_name = "аксесуари"
+        verbose_name = "аксесуар"
         verbose_name_plural = "аксесуари"
 
 
