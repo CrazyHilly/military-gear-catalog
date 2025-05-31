@@ -251,4 +251,61 @@ class CustomerAdmin(UserAdmin):
     actions = ["change_is_staff"]
         
 
+class WishlistStatsFilter(admin.SimpleListFilter):
+    title = _("вподобаннями")
+    parameter_name = "wishitems"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("yes", _("Є у списках бажань")),
+            ("no", _("Немає у списках бажань")),
+        )
+
+    def queryset(self, request, queryset):
+        queryset = queryset.annotate(customers_count=Count("customers"))
+        if self.value() == "yes":
+            return queryset.filter(customers_count__gt=0)
+        if self.value() == "no":
+            return queryset.filter(customers_count=0)
+        return queryset
+    
+
+class ProductWishlistStats(Product):
+    class Meta:
+        proxy = True
+        verbose_name = "Бажаний товар"
+        verbose_name_plural = "Бажані товари"
+
+
+@admin.register(ProductWishlistStats)
+class WishlistStatsAdmin(ProductAdmin):
+    list_display = [
+        "product_number", 
+        "name", 
+        "display_product_count",
+        "display_category", 
+        "country", 
+        "price_low", 
+        "price_high", 
+        "available",
+        ]
+    list_filter = ["available", "country", "category", WishlistStatsFilter]
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.annotate(_wishlist_count=Count("customers"))
+    
+    @admin.display(ordering="customers_count", description="Вподобань")
+    def display_product_count(self, obj):
+        return obj._wishlist_count
+    
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.get("o"):
+            q = request.GET.copy()
+            q["o"] = "-3"
+            request.GET = q
+            request.META["QUERY_STRING"] = request.GET.urlencode()
+        return super().changelist_view(request, extra_context=extra_context)
+
+
 admin.site.unregister(Group)
