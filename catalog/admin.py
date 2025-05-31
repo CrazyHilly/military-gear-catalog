@@ -5,7 +5,8 @@ from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
 
 from catalog.models import (
-    Product, Clothing, Footwear, Accessory, ProductImage, Country, Customer)
+    Product, Clothing, Footwear, Accessory, ProductImage, Country, Customer
+    )
     
 
 class ProductImageInline(admin.TabularInline):
