@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 
-from catalog.models import Product, Clothing, Footwear, Accessory, ProductImage
+from catalog.models import Product, Clothing, Footwear, Accessory, ProductImage, Country
     
 
 class ProductImageInline(admin.TabularInline):
@@ -125,6 +125,11 @@ class AccessoryAdmin(ProductAdmin):
 
     def has_add_permission(self, request):
         return True
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ["ua_name", "en_name"]
 
 
 admin.site.unregister(Group)
