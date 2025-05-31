@@ -10,7 +10,7 @@ from catalog.managers import CustomerManager
 
 class Country(models.Model):
     en_name = models.CharField(max_length=60, unique=True)
-    ua_name = models.CharField(max_length=60, unique=True, verbose_name="назва")
+    ua_name = models.CharField(max_length=60, unique=True, verbose_name="країна")
 
     def __str__(self):
         return self.ua_name
