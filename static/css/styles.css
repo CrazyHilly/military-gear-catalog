@@ -75,17 +75,23 @@ body {
   list-style: none;
 }
 
+.ul-shield li {
+  display: flex;
+  align-items: center;
+}
+
 .ul-shield li::before {
   content: "";
   display: inline-block;
   width: 20px;
   height: 16px;
-  margin: 0 -1px 3px -20px;
+  margin: 3px 2px 3px -20px;
   padding: 0;
   background-image: url("/static/images/shield-transparent.png");
   background-size: contain;
   background-repeat: no-repeat;
   vertical-align: middle;
+  flex-shrink: 0;
 }
 
 .ul-shield li.sidebar-nav-active::before {
