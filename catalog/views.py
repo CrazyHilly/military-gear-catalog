@@ -42,7 +42,7 @@ class ProductListView(generic.ListView):
                 Q(description__icontains=search_input) |
                 Q(product_number__icontains=search_input)
             )
-        return queryset
+        return queryset.filter(~Q(name__icontains="test"))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
