@@ -274,7 +274,7 @@ class ProductWishlistStats(Product):
     class Meta:
         proxy = True
         verbose_name = "Бажаний товар"
-        verbose_name_plural = "Бажані товари"
+        verbose_name_plural = "Товари зі списків бажань"
 
 
 @admin.register(ProductWishlistStats)
