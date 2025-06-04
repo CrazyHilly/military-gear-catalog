@@ -52,13 +52,13 @@
   </li>
 
   <ul class="ul-shield">
-    <li class="{% if request.resolver_match.view_name == 'catalog:clothing-list' %}
+    <li class="{% if request.resolver_match.view_name == 'catalog:accessory-list' %}
                sidebar-nav-active{% endif %}">
-      <a href="{% url 'catalog:clothing-list' %}">
-        Одяг
+      <a href="{% url 'catalog:accessory-list' %}">
+        Аксесуари
       </a>
     </li>
-    
+
     <li class="{% if request.resolver_match.view_name == 'catalog:footwear-list' %}
                sidebar-nav-active{% endif %}">
       <a href="{% url 'catalog:footwear-list' %}">
@@ -66,10 +66,10 @@
       </a>
     </li>
 
-    <li class="{% if request.resolver_match.view_name == 'catalog:accessory-list' %}
+    <li class="{% if request.resolver_match.view_name == 'catalog:clothing-list' %}
                sidebar-nav-active{% endif %}">
-      <a href="{% url 'catalog:accessory-list' %}">
-        Аксесуари
+      <a href="{% url 'catalog:clothing-list' %}">
+        Одяг
       </a>
     </li>
   </ul>
