@@ -9,22 +9,31 @@
 
     <div class="thumbnails">
       <ul class="no-bullet">
-        {% for image in product.images.all %}
-          <li class="mb-2">
-            <a href="{% url 'catalog:product-image-detail' image.pk %}" target="imageFrame">
-              <img src="{{ image.image.url }}" alt="{{ product }}" class="thumbnail">
-            </a>
-          </li>
-        {% endfor %}
+        {% if product.images.all %}
+          {% for image in product.images.all %}
+            <li class="mb-2">
+              <a href="{% url 'catalog:product-image-detail' image.pk %}" target="imageFrame">
+                <img src="{{ image.image.url }}" alt="{{ product }}" class="thumbnail">
+              </a>
+            </li>
+          {% endfor %}
+        {% endif %}
       </ul>
     </div>
 
-    <iframe class="product-image-detail"
-            name="imageFrame"
-            src="{% url 'catalog:product-image-detail' product.main_image.pk %}"
-            scrolling="no"
-            frameborder="0"
-    ></iframe>
+    {% if product.images.all %}
+      <iframe class="product-image-detail"
+              name="imageFrame"
+              src="{% url 'catalog:product-image-detail' product.main_image.pk %}"
+              scrolling="no"
+              frameborder="0"
+      ></iframe>
+    {% else %}
+      <img class="product-image-detail default-image" 
+           src="/media/product_images/default_product_image.avif" 
+           alt="{{ product }}"
+      >
+    {% endif %}
 
     <ul class="no-bullet product-info-display">
       <li>
@@ -52,7 +61,7 @@
       {% if product.available %}
         <li>Є в наявності</li>
       {% else %}
-        <li class="text-color-grey">Немає в наявності</li>
+        <li class="text-color-grey italic">Немає в наявності</li>
       {% endif %}
 
       <li>

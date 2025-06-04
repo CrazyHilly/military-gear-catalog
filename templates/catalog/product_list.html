@@ -53,10 +53,17 @@
 
           <a href="{{ product.get_absolute_url }}">
             <h6>{{ product.name }}</h6>
-            <img class="product-image-list mb-2" 
-                 alt="{{ product.name }}"
-                 src="{{ product.main_image.image.url }}"
-            >
+            {% if product.main_image.image.url %}
+              <img class="product-image-list mb-2" 
+                   alt="{{ product }}"
+                   src="{{ product.main_image.image.url }}"
+              >
+            {% else %}
+              <img class="product-image-list mb-2 default-image" 
+                   alt="{{ product }}"
+                   src="/media/product_images/default_product_image.avif"
+              >
+            {% endif %}
           </a>
 
           {% if product.country %}
@@ -72,7 +79,7 @@
             {% if product.available %}
               <p>В наявності</p>
             {% else %}
-              <p>Немає в наявності</p>
+              <p class="italic">Немає в наявності</p>
             {% endif %}
           </div>
 

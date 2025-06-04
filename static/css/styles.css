@@ -44,6 +44,10 @@ body {
   font-weight: bold;
 }
 
+.italic {
+  font-style: italic;
+}
+
 .text-color-darkgrey {
     color: var(--secondary-color);
 }
@@ -271,6 +275,14 @@ body {
   aspect-ratio: 1 / 1;
   object-fit: contain;
   background-color: transparent;
+}
+
+.product-image-list.default-image {
+  object-fit: fill;
+}
+
+.default-image {
+  opacity: 85%;
 }
 
 .unavailable {
