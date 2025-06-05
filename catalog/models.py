@@ -72,6 +72,10 @@ class Product(models.Model):
             raise ValidationError("Мінімальна ціна має бути нижчою від максимальної.")
 
     def save(self, *args, **kwargs):
+        if self.__class__ == Product:
+            raise ValidationError("Об'єкти можна створювати тільки через "\
+                                  "моделі-нащадки: Clothing, Footwear, Accessory")
+        
         if not self.product_number:
             product_objects = Product.objects.filter(category=self.category)
             last_product = product_objects.order_by("product_number").last()
