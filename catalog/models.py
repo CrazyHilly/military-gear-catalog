@@ -49,9 +49,13 @@ class Product(models.Model):
     category = models.CharField(
         max_length=2, 
         choices=CATEGORY_CHOICES, 
-        verbose_name="категорія"
+        verbose_name="категорія",
         )
-    product_number = models.IntegerField(unique=True, verbose_name="код товару")
+    product_number = models.IntegerField(
+        unique=True, 
+        verbose_name="код товару", 
+        editable=False
+        )
     slug = models.SlugField(null=False)
 
     @property
@@ -68,11 +72,14 @@ class Product(models.Model):
         verbose_name_plural = "товари"
     
     def clean(self):
+        if not self.price_high or not self.price_low:
+            return
+        
         if self.price_low > self.price_high:
             raise ValidationError("Мінімальна ціна має бути нижчою від максимальної.")
 
     def save(self, *args, **kwargs):
-        if self.__class__ == Product:
+        if self.__class__ == Product and not self.pk:
             raise ValidationError("Об'єкти можна створювати тільки через "\
                                   "моделі-нащадки: Clothing, Footwear, Accessory")
         
@@ -84,10 +91,17 @@ class Product(models.Model):
             else:
                 self.product_number = int(self.category + "0001")
 
+        else:
+            db_product = Product.objects.get(pk=self.pk)
+            if db_product.product_number != self.product_number:
+                raise ValidationError("Код товару змінювати заборонено!")
+
+
         if not self.slug:
             slug_name = f"{self.product_number}-{self.name}"
             self.slug = slugify(slug_name, separator="-", lowercase=True)
 
+        self.full_clean()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -96,7 +110,11 @@ class Product(models.Model):
 
 class Clothing(Product):
     def save(self, *args, **kwargs):
-        self.category = "1"
+        category = "1"
+        if self.category and self.category != category:
+            raise ValidationError("Категорію товару змінювати заборонено!")
+            
+        self.category = category
         super().save(*args, **kwargs)
 
     class Meta:
@@ -105,9 +123,13 @@ class Clothing(Product):
 
 
 class Footwear(Product):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.category = "2"
+    def save(self, *args, **kwargs):
+        category = "2"
+        if self.category and self.category != category:
+            raise ValidationError("Категорію товару змінювати заборонено!")
+            
+        self.category = category
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "взуття"
@@ -115,9 +137,13 @@ class Footwear(Product):
 
 
 class Accessory(Product):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.category = "3"
+    def save(self, *args, **kwargs):
+        category = "3"
+        if self.category and self.category != category:
+            raise ValidationError("Категорію товару змінювати заборонено!")
+            
+        self.category = category
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "аксесуар"
