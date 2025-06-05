@@ -9,7 +9,11 @@ from catalog.managers import CustomerManager
 
 
 class Country(models.Model):
-    en_name = models.CharField(max_length=60, unique=True, verbose_name="назва англійською")
+    en_name = models.CharField(
+        max_length=60, 
+        unique=True, 
+        verbose_name="назва англійською"
+        )
     ua_name = models.CharField(max_length=60, unique=True, verbose_name="країна")
 
     def __str__(self):
