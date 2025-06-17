@@ -15,13 +15,18 @@ from catalog.models import (
 class CountryModelTest(TestCase):
     def setUp(self):
         self.country_1 = Country.objects.create(
-            en_name="belgium",
-            ua_name="бельгія",
-        )
-        self.country_2 = Country.objects.create(
             en_name="netherlands",
             ua_name="нідерланди",
         )
+        self.country_2 = Country.objects.create(
+            en_name="belgium",
+            ua_name="бельгія",
+        )
+
+    def test_country_is_created_correctly(self):
+        self.assertTrue(Country.objects.exists())
+        self.assertEqual(len(list(Country.objects.all())), 2)
+        self.assertEqual(Country.objects.first(), self.country_2)
 
     def test_country_str(self):
         self.assertEqual(str(self.country_1), self.country_1.ua_name)
@@ -50,6 +55,12 @@ class CountryModelTest(TestCase):
         en_duplicate = Country(en_name=self.country_1.en_name)
         with self.assertRaises(ValidationError):
             en_duplicate.full_clean()
+
+    def test_country_names_are_capitalized_on_save(self):
+        self.assertEqual(self.country_1.ua_name, "Нідерланди")
+        self.assertEqual(self.country_1.en_name, "Netherlands")
+        self.assertEqual(self.country_2.ua_name, "Бельгія")
+        self.assertEqual(self.country_2.en_name, "Belgium")
 
 
 class ProductModelTest(TestCase):
