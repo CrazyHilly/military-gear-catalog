@@ -114,12 +114,13 @@ class Product(models.Model):
 
 
 class Clothing(Product):
+    CATEGORY = "1"
+
     def save(self, *args, **kwargs):
-        category = "1"
-        if self.category and self.category != category:
+        if self.category and self.category != self.CATEGORY:
             raise ValidationError("Категорію товару змінювати заборонено!")
             
-        self.category = category
+        self.category = self.CATEGORY
         super().save(*args, **kwargs)
 
     class Meta:
@@ -128,12 +129,13 @@ class Clothing(Product):
 
 
 class Footwear(Product):
+    CATEGORY = "2"
+    
     def save(self, *args, **kwargs):
-        category = "2"
-        if self.category and self.category != category:
+        if self.category and self.category != self.CATEGORY:
             raise ValidationError("Категорію товару змінювати заборонено!")
             
-        self.category = category
+        self.category = self.CATEGORY
         super().save(*args, **kwargs)
 
     class Meta:
@@ -142,12 +144,13 @@ class Footwear(Product):
 
 
 class Accessory(Product):
+    CATEGORY = "3"
+
     def save(self, *args, **kwargs):
-        category = "3"
-        if self.category and self.category != category:
+        if self.category and self.category != self.CATEGORY:
             raise ValidationError("Категорію товару змінювати заборонено!")
             
-        self.category = category
+        self.category = self.CATEGORY
         super().save(*args, **kwargs)
 
     class Meta:
