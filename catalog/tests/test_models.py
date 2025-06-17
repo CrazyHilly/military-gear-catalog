@@ -1,7 +1,15 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from slugify import slugify
 
-from catalog.models import Country
+from catalog.models import (
+    Country, 
+    Product, 
+    Clothing, 
+    Footwear, 
+    Accessory, 
+    ProductImage, 
+)
 
 
 class CountryModelTest(TestCase):
@@ -42,3 +50,261 @@ class CountryModelTest(TestCase):
         en_duplicate = Country(en_name=self.country_1.en_name)
         with self.assertRaises(ValidationError):
             en_duplicate.full_clean()
+
+
+class ProductModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        country_f = Country.objects.create(ua_name="Франція", en_name="France")
+        country_c = Country.objects.create(ua_name="Канада", en_name="Canada")
+        country_a = Country.objects.create(ua_name="Австрія", en_name="Austria")
+        clothing = Clothing.objects.create(
+            name="одяг",
+            country=country_c,
+            description="тест",
+            price_low=100,
+            price_high=200,
+        )
+        footwear = Footwear.objects.create(
+            name="взуття",
+            country=country_f,
+            description="тест",
+            price_low=1000,
+            price_high=2000,
+        )
+        accessory = Accessory.objects.create(
+            name="аксесуар",
+            country=country_a,
+            description="тест",
+            price_low=10,
+            price_high=20,
+        )
+        ProductImage.objects.create(
+            product=clothing, 
+            image="catalog\tests\test_media\test_1.jpg"
+            )
+        ProductImage.objects.create(
+            product=footwear, 
+            image="catalog\tests\test_media\test_2.jpg"
+            )
+        ProductImage.objects.create(
+            product=accessory, 
+            image="catalog\tests\test_media\test_3.jpg"
+            )
+
+    def setUp(self):
+        self.clothing = Clothing.objects.get(name__icontains="одяг")
+        self.footwear = Footwear.objects.get(name__icontains="взуття")
+        self.accessory = Accessory.objects.get(name__icontains="аксесуар")
+
+        self.product_clothing = Product.objects.get(name__icontains="одяг")
+        self.product_footwear = Product.objects.get(name__icontains="взуття")
+        self.product_accessory = Product.objects.get(name__icontains="аксесуар")
+        
+        self.products = (
+            self.clothing, self.footwear, self.accessory,
+            self.product_clothing, self.product_footwear, self.product_accessory,
+            )
+        self.product_child_models = (Clothing, Footwear, Accessory)
+
+    def test_product_and_child_models_return_same_db_entries(self):
+        self.assertEqual(self.clothing.pk, self.product_clothing.pk)
+        self.assertEqual(self.footwear.pk, self.product_footwear.pk)
+        self.assertEqual(self.accessory.pk, self.product_accessory.pk)
+
+    def test_product_name_null_raises_error(self):
+        for product in self.products:
+            product.name = None
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_name_blank_raises_error(self):
+        for product in self.products:
+            product.name = ""
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_name_max_length(self):
+        for product in self.products:
+            product.name = "а" * 101
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_can_be_saved_without_country(self):
+        for model in self.product_child_models:
+            product = model.objects.create(name="продукт", price_low=1, price_high=2)
+            self.assertTrue(product.pk)
+
+        for product in self.products:
+            product.country = None
+            product.save()
+            self.assertTrue(product.pk)
+
+    def test_product_country_set_null_on_delete(self):
+        for product in self.products:
+            product.refresh_from_db()
+            if product.country:
+                product.country.delete()
+            product.refresh_from_db()
+            self.assertIsNone(product.country)
+
+    def test_product_can_be_saved_without_description(self):
+        for model in self.product_child_models:
+            product = model.objects.create(name="продукт", price_low=1, price_high=2)
+            self.assertTrue(product.pk)
+
+        for product in self.products:
+            product.description = ""
+            product.save()
+            self.assertEqual(product.description, "")
+
+    def test_product_price_low_min_value(self):
+        for product in self.products:
+            product.price_low = 0
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_price_low_max_value(self):
+        for product in self.products:
+            product.price_low = 11000
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_price_high_min_value(self):
+        for product in self.products:
+            product.price_high = 0
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_price_high_max_value(self):
+        for product in self.products:
+            product.price_high = 11000
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_price_low_higher_than_high(self):
+        for product in self.products:
+            product.price_low = 3000
+            with self.assertRaises(ValidationError):
+                product.full_clean()
+
+    def test_product_price_high_lower_than_low(self):
+        for product in self.products:
+            product.price_high = 3
+            with self.assertRaises(ValidationError):
+                product.full_clean()
+
+    def test_product_is_available_by_default(self):
+        for product in self.products:
+            self.assertTrue(product.available)
+
+    def test_product_category_should_be_within_choices(self):
+        for model in self.product_child_models:
+            with self.assertRaises(ValidationError):
+                model.objects.create(name="а", price_low=1, price_high=10, category="5")
+
+    def test_product_category_cannot_be_changed(self):
+        for product in self.products:
+            product.category = "3" if product.category != "3" else "1"
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_category_is_set_correctly(self):
+        for model in self.product_child_models:
+            product = model.objects.create(name="тест", price_low=1, price_high=10)
+            self.assertEqual(product.category, model.CATEGORY)
+
+    def test_product_number_is_correctly_assigned_for_new_entry(self):
+        for product in self.products:
+            self.assertEqual(product.product_number, int(f"{product.category}0001"))
+        for model in self.product_child_models:
+            product = model.objects.create(name="а", price_low=1, price_high=10)
+            self.assertIsNotNone(product.product_number)
+            self.assertEqual(product.product_number, int(f"{product.category}0002"))
+
+    def test_product_number_is_unique(self):
+        for _ in range(20):
+            Clothing.objects.create(name="тест", price_low=1, price_high=10)
+        product_numbers = list(c.product_number for c in Clothing.objects.all())
+        self.assertEqual(len(product_numbers), len(set(product_numbers)))
+
+    def test_product_number_cannot_be_set_manually(self):
+        for model in self.product_child_models:
+            with self.assertRaises(Product.DoesNotExist):
+                model.objects.create(
+                    name="тест", 
+                    price_low="1", 
+                    price_high="2", 
+                    product_number="33333"
+                    )
+                
+    def test_product_number_cannot_be_changed(self):
+        for product in self.products:
+            product.product_number = "33333"
+            with self.assertRaises(ValidationError):
+                product.save()
+
+    def test_product_slug_is_correctly_assigned_for_new_entry(self):
+        for model in self.product_child_models:
+            product = model.objects.create(name="а", price_low=1, price_high=10)
+            self.assertNotEqual(product.slug, "")
+            self.assertIsNotNone(product.slug)
+            slug_name = f"{product.product_number}-{product.name}"
+            self.assertEqual(
+                product.slug, slugify(slug_name, separator="-", lowercase=True)
+                )
+
+    def test_product_slug_cannot_be_set_manually(self):
+        test_slug = "test"
+        for model in self.product_child_models:
+            product = model.objects.create(
+                name="тест", 
+                price_low="1", 
+                price_high="1", 
+                slug=test_slug,
+                )
+            self.assertNotEqual(product.slug, test_slug)
+
+    def test_product_slug_cannot_be_changed(self):
+        for product in self.products:
+            product_slug = product.slug
+            product.slug = "test"
+            product.save()
+            self.assertEqual(product.slug, product_slug)
+
+    def test_main_image_returns_correct_image(self):
+        for product in self.products[3:]:
+            image = product.images.first()
+            self.assertEqual(image, product.main_image)
+
+            main_image = ProductImage.objects.create(
+                product=product, 
+                image="catalog\tests\test_media\test.avif",
+                is_main=True
+                )
+            self.assertTrue(main_image.is_main)
+            self.assertFalse(image.is_main)
+
+            main_image.is_main = False
+            main_image.save()
+
+    def test_product_str(self):
+        for product in self.products:
+            self.assertEqual(str(product), f"{product.product_number} {product.name}")
+
+    def test_product_ordering(self):
+        self.assertEqual(Product.objects.first().pk, self.clothing.pk)
+        self.assertEqual(Product.objects.last().pk, self.accessory.pk)
+
+        self.clothing.available = False
+        self.clothing.save()
+        
+        self.assertEqual(Product.objects.first().pk, self.footwear.pk)
+        self.assertEqual(Product.objects.last().pk, self.clothing.pk)
+
+    def test_product_class_should_not_create_instances(self):
+        with self.assertRaises(ValidationError):
+            Product.objects.create(name="тест", price_low=1, price_high=2)
+
+    def test_product_category_is_assigned_correctly(self):
+        pass
