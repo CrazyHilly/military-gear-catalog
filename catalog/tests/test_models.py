@@ -308,3 +308,53 @@ class ProductModelTest(TestCase):
 
     def test_product_category_is_assigned_correctly(self):
         pass
+
+
+class ProductImageModelTest(TestCase):
+    @classmethod
+    def setUp(self):
+        self.country = Country.objects.create(ua_name="Франція", en_name="France")
+        self.product = Clothing.objects.create(
+            name="одяг",
+            country=self.country,
+            description="тест",
+            price_low=100,
+            price_high=200,
+        )
+        self.image = "catalog\tests\test_media\test_1.jpg"
+        self.product_image = ProductImage.objects.create(
+            product=self.product, 
+            image=self.image
+            )
+        
+    def test_product_image_is_created_correctly(self):
+        self.assertTrue(ProductImage.objects.exists())
+        self.assertEqual(ProductImage.objects.first().product.pk, self.product.pk)
+        
+    def test_product_image_is_deleted_on_product_delete(self):
+        self.product.delete()
+        self.assertFalse(ProductImage.objects.exists())
+
+    def test_product_image_adds_correct_image(self):
+        self.assertEqual(self.product_image.image, self.image)
+        
+    def test_product_image_not_is_main_by_default(self):
+        self.assertFalse(self.product_image.is_main)
+
+    def test_product_image_is_main_is_changed_correctly(self):
+        self.product_image.is_main = True
+        self.product_image.save()
+        self.assertTrue(self.product_image.is_main)
+
+        main_image = ProductImage.objects.create(
+            product=self.product, 
+            image="catalog\tests\test_media\test_3.jpg",
+            is_main=True
+            )
+        self.product_image.refresh_from_db()
+        self.assertFalse(self.product_image.is_main)
+        self.assertTrue(main_image.is_main)
+        self.assertEqual(self.product.main_image, main_image)
+
+    def test_product_image_str(self):
+        self.assertEqual(str(self.product_image), f"Зображення: {self.product}")
