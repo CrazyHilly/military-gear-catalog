@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from slugify import slugify
@@ -42,11 +42,11 @@ class Product(models.Model):
     )
     description = models.TextField(blank=True, null=True, verbose_name="опис")
     price_low = models.PositiveIntegerField(
-        validators=[MaxValueValidator(10000)], 
+        validators=[MinValueValidator(1), MaxValueValidator(10000)], 
         verbose_name="ціна від"
     )
     price_high = models.PositiveIntegerField(
-        validators=[MaxValueValidator(10000)], 
+        validators=[MinValueValidator(1), MaxValueValidator(10000)], 
         verbose_name="ціна до"
     )
     available = models.BooleanField(default=True, verbose_name="в наявності")
