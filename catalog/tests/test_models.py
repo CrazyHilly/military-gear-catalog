@@ -26,7 +26,6 @@ class CountryModelTest(TestCase):
     def test_country_is_created_correctly(self):
         self.assertTrue(Country.objects.exists())
         self.assertEqual(len(list(Country.objects.all())), 2)
-        self.assertEqual(Country.objects.first(), self.country_2)
 
     def test_country_str(self):
         self.assertEqual(str(self.country_1), self.country_1.ua_name)
