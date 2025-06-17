@@ -9,3 +9,4 @@ static/images
 to_do.txt
 .vscode/
 requirements-dev.txt
+catalog/tests/test_media
