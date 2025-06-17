@@ -60,7 +60,7 @@ class Product(models.Model):
         verbose_name="код товару", 
         editable=False
         )
-    slug = models.SlugField(null=False)
+    slug = models.SlugField(null=False, blank=False, unique=True)
 
     @property
     def main_image(self):
@@ -99,10 +99,11 @@ class Product(models.Model):
             db_product = Product.objects.get(pk=self.pk)
             if db_product.product_number != self.product_number:
                 raise ValidationError("Код товару змінювати заборонено!")
+            if db_product.category and db_product.category != self.category:
+                raise ValidationError("Категорію товару змінювати заборонено!")
 
-
-        if not self.slug:
-            slug_name = f"{self.product_number}-{self.name}"
+        slug_name = f"{self.product_number}-{self.name}"
+        if not self.slug or self.slug != slug_name:
             self.slug = slugify(slug_name, separator="-", lowercase=True)
 
         self.full_clean()
