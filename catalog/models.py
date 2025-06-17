@@ -16,6 +16,11 @@ class Country(models.Model):
         )
     ua_name = models.CharField(max_length=60, unique=True, verbose_name="країна")
 
+    def save(self, *args, **kwargs):
+        self.en_name = self.en_name.capitalize()
+        self.ua_name = self.ua_name.capitalize()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.ua_name
 
