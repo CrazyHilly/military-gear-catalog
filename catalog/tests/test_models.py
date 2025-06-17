@@ -118,6 +118,14 @@ class ProductModelTest(TestCase):
             )
         self.product_child_models = (Clothing, Footwear, Accessory)
 
+    def test_product_is_created_correctly(self):
+        self.assertTrue(Product.objects.exists())
+        self.assertEqual(len(list(Product.objects.all())), 3)
+        
+        for model in self.product_child_models:
+            self.assertTrue(model.objects.exists())
+            self.assertTrue(len(list(model.objects.all())), 1)
+
     def test_product_and_child_models_return_same_db_entries(self):
         self.assertEqual(self.clothing.pk, self.product_clothing.pk)
         self.assertEqual(self.footwear.pk, self.product_footwear.pk)
