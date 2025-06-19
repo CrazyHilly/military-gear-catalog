@@ -45,7 +45,11 @@
       </li>
       
       <li class="bold mt-2 mb-2">
-        {{ product.price_low }}-{{ product.price_high }} грн
+        {% if product.price_low == product.price_high %}
+          {{ product.price_low }} грн
+        {% else %}
+          {{ product.price_low }}-{{ product.price_high }} грн
+        {% endif %}
       </li>
 
       {% if product.description %}
