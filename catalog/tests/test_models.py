@@ -19,8 +19,8 @@ class CountryModelTest(TestCase):
             ua_name="нідерланди",
         )
         self.country_2 = Country.objects.create(
-            en_name="belgium",
-            ua_name="бельгія",
+            en_name="EU",
+            ua_name="ЄС",
         )
 
     def test_country_is_created_correctly(self):
@@ -55,11 +55,11 @@ class CountryModelTest(TestCase):
         with self.assertRaises(ValidationError):
             en_duplicate.full_clean()
 
-    def test_country_names_are_capitalized_on_save(self):
+    def test_country_names_saved_with_correct_register(self):
         self.assertEqual(self.country_1.ua_name, "Нідерланди")
         self.assertEqual(self.country_1.en_name, "Netherlands")
-        self.assertEqual(self.country_2.ua_name, "Бельгія")
-        self.assertEqual(self.country_2.en_name, "Belgium")
+        self.assertEqual(self.country_2.ua_name, "ЄС")
+        self.assertEqual(self.country_2.en_name, "EU")
 
 
 class ProductModelTest(TestCase):
