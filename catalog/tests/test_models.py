@@ -27,7 +27,7 @@ class CountryModelTest(TestCase):
 
     def test_country_is_created_correctly(self):
         self.assertTrue(Country.objects.exists())
-        self.assertEqual(len(list(Country.objects.all())), 2)
+        self.assertEqual(Country.objects.all().count(), 2)
 
     def test_country_str(self):
         self.assertEqual(str(self.country_1), self.country_1.ua_name)
@@ -121,11 +121,11 @@ class ProductModelTest(TestCase):
 
     def test_product_is_created_correctly(self):
         self.assertTrue(Product.objects.exists())
-        self.assertEqual(len(list(Product.objects.all())), 3)
+        self.assertEqual(Product.objects.all().count(), 3)
         
         for model in self.product_child_models:
             self.assertTrue(model.objects.exists())
-            self.assertTrue(len(list(model.objects.all())), 1)
+            self.assertTrue(model.objects.all().count(), 1)
 
     def test_product_and_child_models_return_same_db_entries(self):
         self.assertEqual(self.clothing.pk, self.product_clothing.pk)
