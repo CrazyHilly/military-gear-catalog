@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from slugify import slugify
@@ -9,6 +10,7 @@ from catalog.models import (
     Footwear, 
     Accessory, 
     ProductImage, 
+    Customer
 )
 
 
@@ -376,3 +378,48 @@ class ProductImageModelTest(TestCase):
 
     def test_product_image_str(self):
         self.assertEqual(str(self.product_image), f"Зображення: {self.product}")
+
+
+class CustomerModelTest(TestCase):
+    @classmethod
+    def setUp(self):
+        self.customer = get_user_model().objects.create(
+            first_name="test", 
+            last_name="test", 
+            email="test@test.com"
+            )
+        self.clothing = Clothing.objects.create(
+            name="одяг",
+            price_low=100,
+            price_high=200,
+        )
+        self.footwear = Footwear.objects.create(
+            name="взуття",
+            price_low=1000,
+            price_high=2000,
+        )
+        self.accessory = Accessory.objects.create(
+            name="аксесуар",
+            price_low=10,
+            price_high=20,
+        )
+        
+    def test_customer_username_is_none(self):
+        self.assertIsNone(self.customer.username)
+
+    def test_customer_email_is_unique(self):
+        customer = Customer(first_name="t", last_name="t", email=self.customer.email)
+        with self.assertRaises(ValidationError):
+            customer.full_clean()
+
+    def test_new_customer_wishlist_is_empty(self):
+        self.assertEqual(self.customer.wishlist.all().count(), 0)
+
+    def test_customer_wishlist_adds_items_correctly(self):
+        self.customer.wishlist.add(self.clothing, self.footwear, self.accessory)
+        self.customer.save()
+        self.assertEqual(Customer.objects.first().wishlist.all().count(), 3)
+
+    def test_customer_str(self):
+        user = self.customer
+        self.assertEqual(str(user), f"{user.email}, {user.first_name} {user.last_name}")
