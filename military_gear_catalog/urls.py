@@ -11,7 +11,7 @@ from military_gear_catalog.views import contacts_view, how_to_order_view, about_
 urlpatterns = ([
         path("", ProductListView.as_view(), name="product-list"),
         path("admin/", admin.site.urls),
-        path("catalog/", include("catalog.urls", namespace="catalog")),
+        path("", include("catalog.urls", namespace="catalog")),
         path("accounts/", include("django.contrib.auth.urls")),
         path("registration/", RegistrationView.as_view(), name="registration"),
         path("__debug__/", include(debug_toolbar.urls)),
