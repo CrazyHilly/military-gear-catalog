@@ -22,7 +22,7 @@ def countries_context(request):
             key=lambda c: locale.strxfrm(c["ua_name"])
             )
         
-        cache.set("countries_with_products", cached_data, 600)
+        cache.set("countries_with_products", cached_data, 3600)
     return {"countries_with_products": cached_data}
 
 
