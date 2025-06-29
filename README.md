@@ -79,7 +79,6 @@ However, feedback and suggestions are always welcome!
 
 #### 😄 Fun
 
-If you reached this section, you should be rewarded:
-(*Coming soon)* — 👉 [Click here to have some fun :)](#)
+If you reached this section, you should be rewarded: 👉 [Click here to have some fun :)](#) (*Coming soon)*
 
 ***Made with ❤️ by CrazyHilly***
