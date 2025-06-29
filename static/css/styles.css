@@ -84,10 +84,10 @@ body {
   display: inline-block;
   width: 20px;
   height: 16px;
-  margin: 3px 2px 3px -20px;
+  margin: 4px 2px 3px -20px;
   padding: 0;
   background-image: url("/static/images/shield-transparent.png");
-  background-size: contain;
+  background-size: 14px 16px;
   background-repeat: no-repeat;
   vertical-align: middle;
   flex-shrink: 0;
@@ -201,7 +201,7 @@ body {
 }
 
 .shield-icon {
-    width: 1.2em;
+    width: 1.1em;
     height: 1em;
     padding-right: 3px;
     margin: 5px;
@@ -218,6 +218,11 @@ body {
     width: 1.6em;
     height: 1.4em;
     margin-left: 0;
+}
+
+li .shield-icon {
+    margin-bottom: 8px;
+    margin-left: 5px;;
 }
 
 .exit-icon {
