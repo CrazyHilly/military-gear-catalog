@@ -20,7 +20,18 @@
       <a href="{% url 'catalog:customer-wish-list' %}"
          class="{% if request.resolver_match.view_name == 'catalog:customer-wish-list' %}
                 sidebar-nav-active{% endif %}">
-        Список бажань
+        Список бажань 
+        {% if user.wishlist.all %}
+          <img class="shield-icon" 
+               src="/static/images/shield-solid.png" 
+               alt="Видалити зі списку бажань"
+          >
+        {% else %}
+          <img class="shield-icon" 
+               src="/static/images/shield-transparent.png" 
+               alt="Видалити зі списку бажань"
+          >
+        {% endif %}
       </a>
     </li>
 
