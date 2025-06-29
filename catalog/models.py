@@ -80,7 +80,7 @@ class Product(models.Model):
         return f"{self.product_number} {self.name}"
     
     class Meta:
-        ordering = ["-available", "id"]
+        ordering = ["-available", "-id"]
         verbose_name = "товар"
         verbose_name_plural = "товари"
     
