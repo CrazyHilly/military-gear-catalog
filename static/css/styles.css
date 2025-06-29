@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #375a41;
+    --primary-color: rgb(46, 84, 54);
     --secondary-color: #626c65;
     --primary-shadow-color: rgba(55,120,65,.25);
     --secondary-shadow-color: rgba(98,108,101,.25);
@@ -54,6 +54,11 @@ body {
 
 .text-color-grey {
     color: #a2a6a3;
+}
+
+.logo {
+  max-width: 200px;
+  margin-bottom: 20px;
 }
 
 .sidebar-nav {
