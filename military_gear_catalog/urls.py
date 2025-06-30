@@ -13,7 +13,7 @@ urlpatterns = ([
         path("admin/", admin.site.urls),
         path("", include("catalog.urls", namespace="catalog")),
         path("accounts/", include("django.contrib.auth.urls")),
-        path("registration/", RegistrationView.as_view(), name="registration"),
+        path("accounts/registration/", RegistrationView.as_view(), name="registration"),
         path("__debug__/", include(debug_toolbar.urls)),
         path("contacts/", contacts_view, name="contacts"),
         path("how-to-order/", how_to_order_view, name="how-to-order"),
