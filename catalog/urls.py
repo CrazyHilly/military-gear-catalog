@@ -31,10 +31,10 @@ urlpatterns = [
         CountryProductsListView.as_view(), 
         name="country-products-list"
         ),
-    path("customer/", CustomerDetailView.as_view(), name="customer-detail"),
-    path("customer/update", CustomerUpdateView.as_view(), name="customer-update"),
+    path("account/", CustomerDetailView.as_view(), name="customer-detail"),
+    path("account/update", CustomerUpdateView.as_view(), name="customer-update"),
     path(
-        "customer/wishlist/", 
+        "account/wishlist/", 
         CustomerWishlistView.as_view(), 
         name="customer-wish-list"
         ),
