@@ -43,15 +43,23 @@
 
   {% else %}
     <li>
-      <a href="{% url 'login' %}?next={{ request.path }}"
+      <a {% if request.path == '/' or 'accounts' in request.path %}
+           href="{% url 'login' %}"
+         {% else %}
+           href="{% url 'login' %}?next={{ request.path }}"
+         {% endif %}
          class="{% if request.resolver_match.view_name == 'login' %}
-         sidebar-nav-active{% endif %}">
+                sidebar-nav-active{% endif %}">
         Вхід в кабінет
       </a>
     </li>
 
     <li>
-      <a href="{% url 'registration' %}?next={{ request.path }}"
+      <a {% if request.path == '/' or 'accounts' in request.path %}
+           href="{% url 'registration' %}"
+         {% else %}
+           href="{% url 'registration' %}?next={{ request.path }}"
+         {% endif %}
          class="{% if request.resolver_match.view_name == 'registration' %}
                 sidebar-nav-active{% endif %}">
         Зареєструватись
