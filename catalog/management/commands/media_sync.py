@@ -12,6 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.add_new_images()
         self.cleanup_missing_images()
+        self.delete_duplicates()
 
     def add_new_images(self):
         categories = [item[0] for item in Product.CATEGORY_CHOICES]
@@ -41,7 +42,9 @@ class Command(BaseCommand):
                         product_number, 
                         image_name
                         )
-                    db_image = product.images.filter(image=db_url).first()
+                    db_url_alt = db_url.replace("\\", "/")
+                    db_image = (product.images.filter(image=db_url).first() 
+                                or product.images.filter(image=db_url_alt).first())
                     if not db_image:
                         db_image = ProductImage.objects.create(
                             product=product,
@@ -67,3 +70,26 @@ class Command(BaseCommand):
                 product_image.delete()
                 print(f'Зображення "{product_image.image.path}" для продукту '
                       f'"{product_image.product}" було видалено')
+                
+    def delete_duplicates(self):
+        product_images_dict = {}
+
+        for product_image in ProductImage.objects.all():
+            product_number = product_image.product.product_number
+            image_path = product_image.image.name
+            image_path_normalized = image_path.replace("\\", "/")
+
+            if product_number not in product_images_dict:        
+                product_images_dict[product_number] = set()
+
+            product_images = product_images_dict[product_number]
+            if image_path in product_images or image_path_normalized in product_images:
+                product_image.delete()
+                print(f'Видалено зображення-дублікат "{product_image.image.path}" '
+                      f'для продукту "{product_image.product}"')
+            else:
+                product_images_dict[product_number].add(image_path)
+
+
+
+
