@@ -179,10 +179,17 @@ class ProductImage(models.Model):
         related_name="images", 
         verbose_name="товар"
         )
-    image = models.ImageField(upload_to=product_image_path, verbose_name="зображення")
+    image = models.ImageField(
+        upload_to=product_image_path, 
+        verbose_name="зображення", 
+        unique=True
+        )
     is_main = models.BooleanField(default=False, verbose_name="основне зображення")
-
+        
     def save(self, *args, **kwargs):
+        if self.image and isinstance(self.image.name, str):
+            self.image.name = self.image.name.replace("\\", "/")
+
         if self.is_main:
             previous_main_image = ProductImage.objects.filter(
                 product=self.product, 
