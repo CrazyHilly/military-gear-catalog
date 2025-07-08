@@ -9,15 +9,14 @@
 
     <div class="thumbnails">
       <ul class="no-bullet">
-        {% if product.images.all %}
-          {% for image in product.images.all %}
-            <li class="mb-2">
-              <a href="{% url 'catalog:product-image-detail' image.pk %}" target="imageFrame">
-                <img src="{{ image.image.url }}" alt="{{ product }}" class="thumbnail">
-              </a>
-            </li>
-          {% endfor %}
-        {% endif %}
+        {% for image in product.images.all %}
+          <li class="mb-2">
+            <a href="{% url 'catalog:product-image-detail' image.pk %}" target="imageFrame">
+              <img src="{{ image.image.url }}" alt="{{ product }}" class="thumbnail">
+            </a>
+          </li>
+        {% empty %}
+        {% endfor %}
       </ul>
     </div>
 
