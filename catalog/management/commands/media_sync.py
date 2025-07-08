@@ -36,19 +36,19 @@ class Command(BaseCommand):
                         continue
 
                     message = ""
-                    db_url = os.path.join(
+                    db_url = "\\".join([
                         "product_images", 
                         category, 
                         product_number, 
                         image_name
-                        )
+                        ])
                     db_url_alt = db_url.replace("\\", "/")
                     db_image = (product.images.filter(image=db_url).first() 
                                 or product.images.filter(image=db_url_alt).first())
                     if not db_image:
                         db_image = ProductImage.objects.create(
                             product=product,
-                            image=db_url,
+                            image=db_url_alt,
                             )
                         message = f'Зображення "{image_name}" для "{product}" додано'
                     
