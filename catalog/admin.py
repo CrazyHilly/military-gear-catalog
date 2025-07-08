@@ -21,6 +21,7 @@ class ProductImageInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     list_display = [
         "product_number", 
+        "id",
         "name", 
         "display_category", 
         "country", 
@@ -35,7 +36,8 @@ class ProductAdmin(admin.ModelAdmin):
         "country__en_name", 
         "description", 
         "product_number", 
-        "category"
+        "category",
+        "id"
         ]
     list_filter = ["available", "country__ua_name", "category"]
     inlines = [ProductImageInline]
@@ -136,7 +138,7 @@ class AccessoryAdmin(ProductAdmin):
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ["ua_name", "en_name"]
+    list_display = ["id", "ua_name", "en_name"]
 
 
 class WishitemsFilter(admin.SimpleListFilter):
@@ -190,14 +192,14 @@ class CustomerAdmin(UserAdmin):
         "display_wishlist",
         "display_is_staff", 
         "date_joined", 
-        "last_login",
+        "last_login"
         ]
     search_fields = ["id", "email", "first_name", "last_name"]
     list_filter = [
         "date_joined", 
         "last_login",
         "is_staff", 
-        WishitemsFilter,
+        WishitemsFilter
         ]
     readonly_fields = ["email", "date_joined", "last_login",]
     ordering = ("id",)
@@ -232,7 +234,9 @@ class CustomerAdmin(UserAdmin):
         items_num = len(wishlist)
         str_products = "товар" if items_num == 1 else "товарів"
         if items_num > 9:
-            short_str_wishlist = ", ".join([str(p.product_number) for p in wishlist[:7]])
+            short_str_wishlist = ", ".join(
+                [str(p.product_number) for p in wishlist[:7]]
+                )
             return f"{str(items_num)} {str_products}: {short_str_wishlist}, ..."
         
         str_wishlist = ", ".join([str(p.product_number) for p in wishlist])
@@ -265,11 +269,11 @@ class WishlistStatsFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        queryset = queryset.annotate(customers_count=Count("customers"))
+        queryset = queryset.annotate(wishlists_count=Count("customers"))
         if self.value() == "yes":
-            return queryset.filter(customers_count__gt=0)
+            return queryset.filter(wishlists_count__gt=0)
         if self.value() == "no":
-            return queryset.filter(customers_count=0)
+            return queryset.filter(wishlists_count=0)
         return queryset
     
 
@@ -284,28 +288,29 @@ class ProductWishlistStats(Product):
 class WishlistStatsAdmin(ProductAdmin):
     list_display = [
         "product_number", 
+        "id",
         "name", 
-        "display_product_count",
+        "display_wishlists_count",
         "display_category", 
         "country", 
         "price_low", 
         "price_high", 
-        "available",
+        "available"
         ]
     list_filter = ["available", "country", "category", WishlistStatsFilter]
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.annotate(_wishlist_count=Count("customers"))
+        return queryset.annotate(_wishlists_count=Count("customers"))
     
-    @admin.display(ordering="customers_count", description="Вподобань")
-    def display_product_count(self, obj):
-        return obj._wishlist_count
+    @admin.display(ordering="_wishlists_count", description="Вподобань")
+    def display_wishlists_count(self, obj):
+        return obj._wishlists_count
     
     def changelist_view(self, request, extra_context=None):
         if not request.GET.get("o"):
             q = request.GET.copy()
-            q["o"] = "-3"
+            q["o"] = "-4"
             request.GET = q
             request.META["QUERY_STRING"] = request.GET.urlencode()
         return super().changelist_view(request, extra_context=extra_context)
