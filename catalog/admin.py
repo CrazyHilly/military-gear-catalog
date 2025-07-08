@@ -7,10 +7,13 @@ from django.utils.translation import gettext_lazy as _
 from catalog.models import (
     Product, Clothing, Footwear, Accessory, ProductImage, Country, Customer
     )
+
+from catalog.forms import ProductImageInlineForm
     
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
+    form = ProductImageInlineForm
     extra = 1
 
 

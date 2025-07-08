@@ -1,5 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+
+from catalog.models import ProductImage
 
 
 class ProductSearchForm(forms.Form):
@@ -35,3 +38,25 @@ class RegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+
+class ProductImageInlineForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = "__all__"
+
+    def clean(self):
+        cleaned_data = super().clean()
+        image = cleaned_data.get("image")
+        product = cleaned_data.get("product")
+
+        if image and product:
+            product_images = product.images.values_list("image", flat=True)
+            for product_image in product_images:
+                if (image.name in product_image and 
+                    self.instance.image.name != product_image):
+                    self.add_error(None, ValidationError(
+                        f'Зображення з імʼям "{image.name}" вже існує.',
+                        code="duplicate_filename"
+                    ))
+        return cleaned_data
