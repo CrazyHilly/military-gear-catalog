@@ -13,6 +13,11 @@ from catalog.models import Product, Clothing, Footwear, Accessory, Country, Prod
 
 class ProductDetailView(generic.DetailView):
     model = Product
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["main_image"] = self.object.images.filter(is_main=True).first()
+        return context
 
 
 class ProductListView(generic.ListView):
