@@ -39,8 +39,9 @@
               frameborder="0"
       ></iframe>
     {% else %}
+      {% load static %}
       <img class="product-image-detail default-image" 
-           src="/media/product_images/default_product_image.avif" 
+           src="{% static 'images/default_product_image.avif' %}" 
            alt="{{ product }}"
       >
     {% endif %}

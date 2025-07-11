@@ -1,7 +1,9 @@
+{% load static %}
+
 <ul class="sidebar-nav">
   <li>
     <a href="{% url 'product-list' %}">
-      <img class="logo" src="/static/images/Defender.png" alt="Каталог товарів">
+      <img class="logo" src="{% static 'images/Defender.png' %}" alt="Каталог товарів">
     </a>
   </li>
 
@@ -17,7 +19,7 @@
       <form method="POST" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="btn-transparent">
-          <img class="exit-icon" src="/static/images/exit-icon.png" alt="Вийти">
+          <img class="exit-icon" src="{% static 'images/exit-icon.png' %}" alt="Вийти">
         </button>
       </form>
     </li>
@@ -29,12 +31,12 @@
         Список бажань 
         {% if user.wishlist.all %}
           <img class="shield-icon" 
-               src="/static/images/shield-solid.png" 
+               src="{% static 'images/shield-solid.png' %}" 
                alt="Видалити зі списку бажань"
           >
         {% else %}
           <img class="shield-icon" 
-               src="/static/images/shield-transparent.png" 
+               src="{% static 'images/shield-transparent.png' %}" 
                alt="Видалити зі списку бажань"
           >
         {% endif %}

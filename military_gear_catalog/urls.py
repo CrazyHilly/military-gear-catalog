@@ -14,7 +14,6 @@ urlpatterns = ([
         path("", include("catalog.urls", namespace="catalog")),
         path("accounts/", include("django.contrib.auth.urls")),
         path("accounts/registration/", RegistrationView.as_view(), name="registration"),
-        path("__debug__/", include(debug_toolbar.urls)),
         path("contacts/", contacts_view, name="contacts"),
         path("how-to-order/", how_to_order_view, name="how-to-order"),
         path("about-us/", about_us_view, name="about-us"),

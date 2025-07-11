@@ -20,9 +20,10 @@
   <h6 class="mt-4">
     Фото нашого магазину:
   </h6>
-  <img class="main-store-image" alt="Фото магазину" src="/static/images/store_photos/main.jpg">
+  {% load static %}
+  <img class="main-store-image" alt="Фото магазину" src="{% static 'images/store_photos/main.jpg' %}">
   <div class="store-image-grid">
-    <img class="store-image" alt="Фото магазину" src="/static/images/store_photos/1.jpg">
-    <img class="store-image" alt="Фото магазину" src="/static/images/store_photos/2.jpg">
+    <img class="store-image" alt="Фото магазину" src="{% static 'images/store_photos/1.jpg' %}">
+    <img class="store-image" alt="Фото магазину" src="{% static 'images/store_photos/2.jpg' %}">
   </div>
 {% endblock %}

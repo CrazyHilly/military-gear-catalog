@@ -46,6 +46,7 @@
     Як нас знайти:
   </h6>
   <div class="indented">
+    {% load static %}
     <details closed class="mb-3">
       <summary class="underlined">
         Вхід на ринок з вул. П. Орлика
@@ -55,7 +56,7 @@
       </p>
       <img class="store-location-image" 
          alt="Шлях до магазину з П. Орлика"
-         src="/static/images/store_location/pylypa_orlyka.png"
+         src="{% static 'images/store_location/pylypa_orlyka.png' %}"
       >
     </details>
 
@@ -68,7 +69,7 @@
       </p>
       <img class="store-location-image" 
            alt="Шлях до магазину з В. Великого"
-           src="/static/images/store_location/volodymyra_velykoho.png"
+           src="{% static 'images/store_location/volodymyra_velykoho.png' %}"
       >
     </details>
   </div>

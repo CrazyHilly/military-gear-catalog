@@ -1,10 +1,11 @@
 {% load query_transform %}
+{% load static %}
 
 {% with customer_wishlist_product_numbers as wishlist %}
   {% if not user.is_authenticated or product.product_number not in wishlist %}
     <a href="{% update_wishlist_url product 'add' %}">
       <img class="shield-icon" 
-           src="/static/images/shield-transparent.png" 
+           src="{% static 'images/shield-transparent.png' %}" 
            alt="Додати до списку бажань"
       >
     </a>
@@ -12,7 +13,7 @@
   {% else %}
     <a href="{% update_wishlist_url product %}">
       <img class="shield-icon" 
-           src="/static/images/shield-solid.png" 
+           src="{% static 'images/shield-solid.png' %}" 
            alt="Видалити зі списку бажань"
       >
     </a>
