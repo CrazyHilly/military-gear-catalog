@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
+from django.utils.functional import cached_property
 from slugify import slugify
 
 from catalog.managers import CustomerManager
@@ -71,10 +72,13 @@ class Product(models.Model):
         )
     slug = models.SlugField(null=False, blank=False, unique=True)
 
-    @property
+    @cached_property
     def main_image(self):
-        main_image = self.images.filter(is_main=True).first()
-        return main_image if main_image else self.images.first()
+        images = list(self.images.all())  # uses prefetched images if available
+        for image in images:
+            if image.is_main:
+                return image
+        return images[0] if images else None
 
     def __str__(self):
         return f"{self.product_number} {self.name}"
