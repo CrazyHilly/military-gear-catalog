@@ -74,7 +74,7 @@ class Product(models.Model):
 
     @cached_property
     def main_image(self):
-        images = list(self.images.all())  # uses prefetched images if available
+        images = list(self.images.all())
         for image in images:
             if image.is_main:
                 return image
