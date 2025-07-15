@@ -14,7 +14,7 @@
              value="Пошук" 
              autocomplete="off-word"
       >
-      <a class="btn btn-secondary" href="{% url 'catalog:product-list' %}">
+      <a class="btn btn-secondary" href="{{ request.path }}">
         Очистити
       </a>
     </div>
