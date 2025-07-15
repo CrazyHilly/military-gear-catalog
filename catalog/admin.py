@@ -62,6 +62,10 @@ class ProductAdmin(admin.ModelAdmin):
             fields = [f for f in fields if f != "product_number"]
             
         return fields
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.select_related("country")
     
     def save_model(self, request, obj, form, change):
         if not obj.category:
@@ -243,6 +247,10 @@ class CustomerAdmin(UserAdmin):
         return f"{str(items_num)} {str_products}: {str_wishlist}"
     
     display_wishlist.short_description = "Список бажань"
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.prefetch_related("wishlist")
 
     class Media:
         css = {
