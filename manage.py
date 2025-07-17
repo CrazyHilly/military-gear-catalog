@@ -11,7 +11,7 @@ load_dotenv()
 def main():
     """Run administrative tasks."""
     os.environ.setdefault(
-        "DJANGO_SETTINGS_MODULE", "military_gear_catalog.settings.dev"
+        "DJANGO_SETTINGS_MODULE", "military_gear_catalog.settings.prod"
     )
     try:
         from django.core.management import execute_from_command_line
