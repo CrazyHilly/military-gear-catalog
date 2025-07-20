@@ -1,11 +1,11 @@
-import locale
+from pyuca import Collator
 
 from django.core.cache import cache
 from django.db.models import Count
 
 from .models import Country
 
-locale.setlocale(locale.LC_COLLATE, 'uk_UA.UTF-8')
+collator = Collator()
 
 
 def countries_context(request):
@@ -18,8 +18,7 @@ def countries_context(request):
             ).filter(product_count__gt=0).values(*fields_to_display)
 
         cached_data = sorted(
-            countries_with_products, 
-            key=lambda c: locale.strxfrm(c["ua_name"])
+            countries_with_products, key=lambda c: collator.sort_key(c["ua_name"])
             )
         
         cache.set("countries_with_products", cached_data, 3600)
