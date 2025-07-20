@@ -25,11 +25,3 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns = ([path("__debug__/", include(debug_toolbar.urls)),] +
                    urlpatterns)
-# else:
-#     # allow static/media in "DEBUG = False" only locally
-#     from django.views.static import serve
-
-#     urlpatterns += [
-#         path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),
-#         path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
-#     ]
