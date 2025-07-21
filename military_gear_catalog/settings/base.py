@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
     "debug_toolbar",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -128,5 +129,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 INTERNAL_IPS = ["127.0.0.1", "localhost",]
