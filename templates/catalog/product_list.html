@@ -7,7 +7,7 @@
 
 {% block content %}
   <form method="get" action="" class="mb-0 mt-2">
-    <div class="form-inline m-0 ">
+    <div class="form-inline m-0">
       {{ search_form|crispy }}
       <input class="btn btn-primary mr-1 ml-1" 
              type="submit" 
@@ -26,7 +26,7 @@
              value="category" 
              {% if search_scope == "category" %}checked{% endif %}
       >
-      <label class="form-check-label" for="scope-category">
+      <label class="form-check-label mr-4" for="scope-category">
         Шукати в обраній категорії
       </label>
      <input type="radio" 
