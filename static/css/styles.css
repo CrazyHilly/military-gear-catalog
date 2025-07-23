@@ -148,7 +148,8 @@ body {
 
 .form-control {
     border-color: var(--border-color);
-    width: 600px;
+    width: 80%;
+    max-width: 22.3em;
 }
 
 .form-control:focus {
