@@ -31,6 +31,10 @@ Customers can:
 
 **Work in progress** — I’m actively developing this project and regularly adding new features and improvements.
 
+#### 🌐 Live Demo
+
+[https://defender-ijhv.onrender.com/](https://defender-ijhv.onrender.com/)
+
 #### 📸 Screenshots
 
 _(Coming soon)_ — Will add screenshots of the product list, detail view, and admin panel once UI is more polished.
@@ -79,6 +83,6 @@ However, feedback and suggestions are always welcome!
 
 #### 😄 Fun
 
-If you reached this section, you should be rewarded: 👉 [Click here to have some fun :)](#) (*Coming soon)*
+If you reached this section, you should be rewarded: 👉 [Click here to have some fun :)](https://defender-ijhv.onrender.com/countries/EU/)
 
 ***Made with ❤️ by CrazyHilly***
