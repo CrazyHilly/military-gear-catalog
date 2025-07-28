@@ -1,12 +1,9 @@
 {% load static %}
+<a href="{% url 'product-list' %}">
+  <img class="logo" src="{% static 'images/Defender.png' %}" alt="Каталог товарів">
+</a>
 
 <ul class="sidebar-nav">
-  <li>
-    <a href="{% url 'product-list' %}">
-      <img class="logo" src="{% static 'images/Defender.png' %}" alt="Каталог товарів">
-    </a>
-  </li>
-
   {% if user.is_authenticated %}
     <li class="flex">
       <a href="{% url 'catalog:customer-detail' %}"
