@@ -74,8 +74,6 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-catalog/tests/
-requirements-dev.txt
 
 # Translations
 *.mo
