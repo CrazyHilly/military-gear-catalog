@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.test import TestCase
 from slugify import slugify
 
@@ -353,6 +354,16 @@ class ProductImageModelTest(TestCase):
     def test_product_image_is_deleted_on_product_delete(self):
         self.product.delete()
         self.assertFalse(ProductImage.objects.exists())
+
+    def test_product_image_is_unique(self):
+        product = Footwear.objects.create(
+            name="взуття",
+            country=self.country,
+            price_low=1,
+            price_high=1
+        )
+        with self.assertRaises(IntegrityError):
+            ProductImage.objects.create(product=product, image=self.image)
 
     def test_product_image_adds_correct_image(self):
         self.assertEqual(self.product_image.image, self.image)
