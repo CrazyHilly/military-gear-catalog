@@ -331,7 +331,6 @@ class ProductModelTest(TestCase):
 
 
 class ProductImageModelTest(TestCase):
-    @classmethod
     def setUp(self):
         self.country = Country.objects.create(ua_name="Франція", en_name="France")
         self.product = Clothing.objects.create(
@@ -391,7 +390,6 @@ class ProductImageModelTest(TestCase):
 
 
 class CustomerModelTest(TestCase):
-    @classmethod
     def setUp(self):
         self.customer = get_user_model().objects.create(
             first_name="test", 
