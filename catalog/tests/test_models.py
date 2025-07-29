@@ -305,22 +305,21 @@ class ProductModelTest(TestCase):
             self.assertTrue(main_image.is_main)
             self.assertFalse(image.is_main)
 
-            main_image.is_main = False
-            main_image.save()
+            main_image.delete()
 
     def test_product_str(self):
         for product in self.products:
             self.assertEqual(str(product), f"{product.product_number} {product.name}")
 
     def test_product_ordering(self):
-        self.assertEqual(Product.objects.first().pk, self.clothing.pk)
-        self.assertEqual(Product.objects.last().pk, self.accessory.pk)
+        self.assertEqual(Product.objects.first().pk, self.accessory.pk)
+        self.assertEqual(Product.objects.last().pk, self.clothing.pk)
 
-        self.clothing.available = False
-        self.clothing.save()
+        self.accessory.available = False
+        self.accessory.save()
         
         self.assertEqual(Product.objects.first().pk, self.footwear.pk)
-        self.assertEqual(Product.objects.last().pk, self.clothing.pk)
+        self.assertEqual(Product.objects.last().pk, self.accessory.pk)
 
     def test_product_class_should_not_create_instances(self):
         with self.assertRaises(ValidationError):
