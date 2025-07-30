@@ -36,11 +36,3 @@ class ProductDetailViewTest(TestCase):
 
     def test_product_detail_view_uses_correct_template(self):
         self.assertTemplateUsed(self.response, self.template)
-
-    def test_product_detail_view_context_is_correct(self):
-        self.assertEqual(self.response.context["main_image"], None)
-
-        self.product_image.is_main = True
-        self.product_image.save()
-        response = self.client.get(self.url)
-        self.assertEqual(response.context["main_image"], self.product_image)
