@@ -31,7 +31,8 @@ class ProductListView(generic.ListView):
         return self.request.session.get("search_scope", self.default_search_scope)
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related("country").prefetch_related("images")
+        queryset = \
+            super().get_queryset().select_related("country").prefetch_related("images")
         search_input = self.request.GET.get("search_input")
         search_scope = self.get_search_scope()
         
