@@ -2,12 +2,14 @@ from django.test import TestCase
 from django.urls import reverse
 
 from catalog.models import (
+    Accessory,
     Country, 
     Product, 
     Clothing, 
     Footwear, 
     ProductImage, 
 )
+from catalog.tests.category_base_test import CategoryListViewTestBase
 from catalog.views import ProductListView
 
 
@@ -102,3 +104,33 @@ class ProductListViewTest(TestCase):
         self.assertIn("search_form", response.context)
         form = response.context["search_form"]
         self.assertEqual(form.initial.get("search_input"), "одяг")
+
+
+class ClothingListViewTest(CategoryListViewTestBase, TestCase):
+    def setUp(self):
+        self.model = Clothing
+        self.model_name = "clothing"
+        self.product_name = "одяг"
+        self.secondary_model = Footwear
+        self.secondary_product_name = "взуття"
+        super().setUp()
+
+
+class FootwearListViewTest(CategoryListViewTestBase, TestCase):
+    def setUp(self):
+        self.model = Footwear
+        self.model_name = "footwear"
+        self.product_name = "взуття"
+        self.secondary_model = Clothing
+        self.secondary_product_name = "одяг"
+        super().setUp()
+
+
+class AccessoryListViewTest(CategoryListViewTestBase, TestCase):
+    def setUp(self):
+        self.model = Accessory
+        self.model_name = "accessory"
+        self.product_name = "аксесуар"
+        self.secondary_model = Footwear
+        self.secondary_product_name = "взуття"
+        super().setUp()
