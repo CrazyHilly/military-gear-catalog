@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
@@ -250,3 +251,28 @@ class CountryProductsListViewTest(TestCase):
         self.assertIn("search_form", response.context)
         form = response.context["search_form"]
         self.assertEqual(form.initial.get("search_input"), "одяг")
+
+
+class CustomerDetailViewPublicTest(TestCase):
+    def test_customer_detail_view_is_private(self):
+        url = reverse(f"catalog:customer-detail")
+        response = self.client.get(url)
+        self.assertNotEqual(response.status_code, 200)
+
+
+class CustomerDetailViewPrivateTest(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email="TestUser@test.com",
+            password="password",
+        )
+        self.client.force_login(self.user)
+        self.url = reverse(f"catalog:customer-detail")
+        self.response = self.client.get(self.url)
+        self.template = f"catalog/customer_detail.html"
+        
+    def test_customer_detail_view_is_accessible(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_customer_detail_view_uses_correct_template(self):
+        self.assertTemplateUsed(self.response, self.template)
