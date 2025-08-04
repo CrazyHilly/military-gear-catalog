@@ -10,7 +10,7 @@ from catalog.models import (
     ProductImage, 
 )
 from catalog.tests.category_base_test import CategoryListViewTestBase
-from catalog.views import ProductListView
+from catalog.views import CountryListView, ProductListView
 
 
 class ProductDetailViewTest(TestCase):            
@@ -134,3 +134,48 @@ class AccessoryListViewTest(CategoryListViewTestBase, TestCase):
         self.secondary_model = Footwear
         self.secondary_product_name = "взуття"
         super().setUp()
+
+
+class CountryListViewTest(TestCase):
+    def setUp(self):
+        self.num_per_page = CountryListView.paginate_by
+        self.view = "country_list"
+
+        self.country = Country.objects.create(en_name="country", ua_name="країна")
+        self.product = Clothing.objects.create(
+            name="одяг",
+            country=self.country,
+            price_low=100,
+            price_high=200,
+        )
+            
+        self.url = reverse(f"catalog:country-list")
+        self.response = self.client.get(self.url)
+        self.template = f"catalog/{self.view}.html"
+
+    def test_country_list_view_is_accessible(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_country_list_view_uses_correct_template(self):
+        self.assertTemplateUsed(self.response, self.template)
+
+    def test_country_list_pagination_is_correct(self):
+        self.assertFalse(self.response.context["is_paginated"])
+        self.assertEqual(len(self.response.context[self.view]), 1)
+
+        for i in range(20):
+            Country.objects.create(en_name=f"test{i}", ua_name=f"тест{i}")
+        response = self.client.get(self.url)
+        self.assertTrue(response.context["is_paginated"])
+        self.assertEqual(len(response.context[self.view]), 20)
+
+    def test_country_list_view_displays_all_items(self):
+        for i in range(20):
+            Country.objects.create(en_name=f"test{i}", ua_name=f"тест{i}")
+        response = self.client.get(self.url)
+        num_pages = response.context["paginator"].num_pages
+        response = self.client.get(self.url + f"?page={num_pages}")
+        self.assertEqual(
+            len(response.context[self.view]),
+            Country.objects.count() - self.num_per_page
+        )
