@@ -114,6 +114,11 @@ class RegistrationView(generic.CreateView):
     form_class = RegistrationForm
     template_name = "registration/registration.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("catalog:product-list")
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["next"] = self.request.GET.get("next", "")
