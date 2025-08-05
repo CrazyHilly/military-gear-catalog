@@ -312,3 +312,4 @@ class CustomerUpdateViewPrivateTest(TestCase):
         response_post = self.client.post(self.url, post_data)
         self.assertEqual(response_post.status_code, 302)
         self.assertRedirects(response_post, reverse(f"catalog:customer-detail"))
+        

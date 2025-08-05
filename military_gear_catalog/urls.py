@@ -5,11 +5,10 @@ from django.urls import path, include
 
 from django.conf import settings
 
-from catalog.views import ProductListView, RegistrationView
+from catalog.views import RegistrationView
 from military_gear_catalog.views import contacts_view, how_to_order_view, about_us_view
 
 urlpatterns = ([
-        path("", ProductListView.as_view(), name="product-list"),
         path("admin/", admin.site.urls),
         path("", include("catalog.urls", namespace="catalog")),
         path("accounts/", include("django.contrib.auth.urls")),
