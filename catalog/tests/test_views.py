@@ -276,3 +276,39 @@ class CustomerDetailViewPrivateTest(TestCase):
 
     def test_customer_detail_view_uses_correct_template(self):
         self.assertTemplateUsed(self.response, self.template)
+
+
+class CustomerUpdateViewPublicTest(TestCase):
+    def test_customer_update_view_is_private(self):
+        url = reverse(f"catalog:customer-update")
+        response = self.client.get(url)
+        self.assertNotEqual(response.status_code, 200)
+
+
+class CustomerUpdateViewPrivateTest(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email="TestUser@test.com",
+            password="password",
+        )
+        self.client.force_login(self.user)
+        self.url = reverse(f"catalog:customer-update")
+        self.response = self.client.get(self.url)
+        self.template = f"catalog/customer_update.html"
+        
+    def test_customer_update_view_is_accessible(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_customer_update_view_uses_correct_template(self):
+        self.assertTemplateUsed(self.response, self.template)
+
+    def test_customer_update_view_contains_all_fields(self):
+        form = self.response.context.get("form")
+        self.assertIn("first_name", form.fields)
+        self.assertIn("last_name", form.fields)
+
+    def test_customer_update_view_redirect_is_correct(self):
+        post_data = {"first_name": "test", "last_name": "test"}
+        response_post = self.client.post(self.url, post_data)
+        self.assertEqual(response_post.status_code, 302)
+        self.assertRedirects(response_post, reverse(f"catalog:customer-detail"))
