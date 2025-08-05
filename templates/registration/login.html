@@ -16,7 +16,7 @@
     {{ form|crispy }}
     <input type="submit" value="Увійти" class="btn btn-primary">
     <input type="hidden" name="next" value="{{ next }}">
-    <a href="{% url 'registration' %}{% if next %}?next={{ next }}{% endif %}" 
+    <a href="{% url 'customer-registration' %}{% if next %}?next={{ next }}{% endif %}" 
        class="btn btn-secondary">
       Зареєструватись
     </a>
