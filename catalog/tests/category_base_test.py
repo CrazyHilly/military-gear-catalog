@@ -89,3 +89,4 @@ class CategoryListViewTestBase:
         self.assertIn("search_form", response.context)
         form = response.context["search_form"]
         self.assertEqual(form.initial.get("search_input"), self.product_name)
+        
