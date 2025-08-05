@@ -312,4 +312,54 @@ class CustomerUpdateViewPrivateTest(TestCase):
         response_post = self.client.post(self.url, post_data)
         self.assertEqual(response_post.status_code, 302)
         self.assertRedirects(response_post, reverse(f"catalog:customer-detail"))
+
+
+class RegistrationViewPublicTest(TestCase):
+    def setUp(self):
+        self.url = reverse(f"customer-registration")
+        self.response = self.client.get(self.url)
+        self.template = f"registration/registration.html"
+
+    def test_registration_view_is_accessible(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_registration_view_uses_correct_template(self):
+        self.assertTemplateUsed(self.response, self.template)
+
+    def test_registration_view_contains_all_fields(self):
+        form = self.response.context.get("form")
+        self.assertIn("first_name", form.fields)
+        self.assertIn("last_name", form.fields)
+        self.assertIn("email", form.fields)
+        self.assertIn("password1", form.fields)
+        self.assertIn("password2", form.fields)
+
+    def test_registration_view_redirect_is_correct(self):
+        post_data = {
+            "first_name": "test", 
+            "last_name": "test",
+            "email": "test@test.com",
+            "password1": "password",
+            "password2": "password"
+            }
+        response_post = self.client.post(self.url, post_data)
+        self.assertEqual(response_post.status_code, 302)
+        self.assertRedirects(response_post, reverse(f"catalog:product-list"))
+        user = response_post.wsgi_request.user
+        self.assertTrue(user.is_authenticated)
+
+
+class RegistrationViewPrivateTest(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email="TestUser@test.com",
+            password="password",
+        )
+        self.client.force_login(self.user)
+        self.url = reverse(f"customer-registration")
+        self.response = self.client.get(self.url)
+
+    def test_authenticated_user_is_redirected_from_registration_view(self):
+        self.assertEqual(self.response.status_code, 302)
+        self.assertRedirects(self.response, reverse(f"catalog:product-list"))
         
