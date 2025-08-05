@@ -1,5 +1,5 @@
 {% load static %}
-<a href="{% url 'product-list' %}">
+<a href="{% url 'catalog:product-list' %}">
   <img class="logo" src="{% static 'images/Defender.png' %}" alt="Каталог товарів">
 </a>
 
@@ -69,7 +69,7 @@
 
   <li>
     <a href="{% url 'catalog:product-list' %}"
-       class="{% if 'product-list' in request.resolver_match.view_name %}
+       class="{% if 'catalog:product-list' in request.resolver_match.view_name %}
               sidebar-nav-active{% endif %}">
       Каталог товарів
     </a>

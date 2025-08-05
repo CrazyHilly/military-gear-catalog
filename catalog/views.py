@@ -125,7 +125,7 @@ class RegistrationView(generic.CreateView):
         return response
     
     def get_success_url(self):
-        return self.request.POST.get("next") or reverse_lazy("product-list")
+        return self.request.POST.get("next") or reverse_lazy("catalog:product-list")
 
 
 class CustomerWishlistView(LoginRequiredMixin, ProductListView):
