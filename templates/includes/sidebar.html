@@ -55,11 +55,11 @@
 
     <li>
       <a {% if request.path == '/' or 'accounts' in request.path %}
-           href="{% url 'registration' %}"
+           href="{% url 'customer-registration' %}"
          {% else %}
-           href="{% url 'registration' %}?next={{ request.path }}"
+           href="{% url 'customer-registration' %}?next={{ request.path }}"
          {% endif %}
-         class="{% if request.resolver_match.view_name == 'registration' %}
+         class="{% if request.resolver_match.view_name == 'customer-registration' %}
                 sidebar-nav-active{% endif %}">
         Зареєструватись
       </a>
