@@ -319,6 +319,13 @@ class RegistrationViewPublicTest(TestCase):
         self.url = reverse(f"customer-registration")
         self.response = self.client.get(self.url)
         self.template = f"registration/registration.html"
+        self.post_data = {
+            "first_name": "test", 
+            "last_name": "test",
+            "email": "test@test.com",
+            "password1": "password",
+            "password2": "password"
+            }
 
     def test_registration_view_is_accessible(self):
         self.assertEqual(self.response.status_code, 200)
@@ -334,17 +341,25 @@ class RegistrationViewPublicTest(TestCase):
         self.assertIn("password1", form.fields)
         self.assertIn("password2", form.fields)
 
-    def test_registration_view_redirect_is_correct(self):
-        post_data = {
-            "first_name": "test", 
-            "last_name": "test",
-            "email": "test@test.com",
-            "password1": "password",
-            "password2": "password"
-            }
-        response_post = self.client.post(self.url, post_data)
+    def test_registration_view_redirects_to_index_page(self):
+        response_post = self.client.post(self.url, self.post_data)
         self.assertEqual(response_post.status_code, 302)
         self.assertRedirects(response_post, reverse(f"catalog:product-list"))
+
+        user = response_post.wsgi_request.user
+        self.assertTrue(user.is_authenticated)
+
+    def test_registration_view_redirects_to_next_page(self):
+        next_url = reverse(f"catalog:country-list")
+        url_with_next = reverse("customer-registration") + f"?next={next_url}"
+        
+        response_get = self.client.get(url_with_next)
+        self.assertEqual(response_get.status_code, 200)
+
+        response_post = self.client.post(url_with_next, self.post_data)
+        self.assertEqual(response_post.status_code, 302)
+        self.assertRedirects(response_post, next_url)
+
         user = response_post.wsgi_request.user
         self.assertTrue(user.is_authenticated)
 
