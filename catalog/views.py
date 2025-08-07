@@ -107,7 +107,14 @@ class CustomerUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self):
         return self.request.user
-    
+
+
+class CustomerWishlistView(LoginRequiredMixin, ProductListView):
+    template_name = "catalog/product_list.html"
+
+    def get_queryset(self):
+        return self.request.user.wishlist.all()
+
 
 class RegistrationView(generic.CreateView):
     model = get_user_model()
@@ -131,13 +138,6 @@ class RegistrationView(generic.CreateView):
     
     def get_success_url(self):
         return self.request.POST.get("next") or reverse_lazy("catalog:product-list")
-
-
-class CustomerWishlistView(LoginRequiredMixin, ProductListView):
-    template_name = "catalog/product_list.html"
-
-    def get_queryset(self):
-        return self.request.user.wishlist.all()
 
 
 @login_required
