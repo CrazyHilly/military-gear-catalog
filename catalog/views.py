@@ -92,30 +92,6 @@ class CountryProductsListView(ProductListView):
         return super().get_queryset().filter(country=country)
 
 
-class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
-    model = get_user_model()
-
-    def get_object(self):
-        return self.request.user
-
-
-class CustomerUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = get_user_model()
-    fields = ["first_name", "last_name"]
-    template_name = "catalog/customer_update.html"
-    success_url = reverse_lazy("catalog:customer-detail")
-
-    def get_object(self):
-        return self.request.user
-
-
-class CustomerWishlistView(LoginRequiredMixin, ProductListView):
-    template_name = "catalog/product_list.html"
-
-    def get_queryset(self):
-        return self.request.user.wishlist.all()
-
-
 class RegistrationView(generic.CreateView):
     model = get_user_model()
     form_class = RegistrationForm
@@ -138,6 +114,30 @@ class RegistrationView(generic.CreateView):
     
     def get_success_url(self):
         return self.request.POST.get("next") or reverse_lazy("catalog:product-list")
+
+
+class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = get_user_model()
+
+    def get_object(self):
+        return self.request.user
+
+
+class CustomerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+    fields = ["first_name", "last_name"]
+    template_name = "catalog/customer_update.html"
+    success_url = reverse_lazy("catalog:customer-detail")
+
+    def get_object(self):
+        return self.request.user
+
+
+class CustomerWishlistView(LoginRequiredMixin, ProductListView):
+    template_name = "catalog/product_list.html"
+
+    def get_queryset(self):
+        return self.request.user.wishlist.all()
 
 
 @login_required
