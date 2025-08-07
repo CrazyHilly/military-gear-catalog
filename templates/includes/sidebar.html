@@ -65,9 +65,8 @@
       </a>
     </li>
   {% endif %}
-  <br>
 
-  <li>
+  <li class="sidebar-heading">
     <a href="{% url 'catalog:product-list' %}"
        class="{% if 'catalog:product-list' in request.resolver_match.view_name %}
               sidebar-nav-active{% endif %}">
@@ -97,10 +96,9 @@
       </a>
     </li>
   </ul>
-  <br>
 
   {% if countries_with_products %}
-    <li>
+    <li class="sidebar-heading">
       <a href="{% url 'catalog:country-list' %}"
          class="{% if request.resolver_match.view_name == 'catalog:country-list' %}
                 sidebar-nav-active{% endif %}">
@@ -119,9 +117,8 @@
       {% endfor %}
     </ul>
   {% endif %}
-  <br>
 
-  <li>
+  <li class="sidebar-heading">
     <a href="{% url 'about-us' %}"
        class="{% if request.resolver_match.view_name == 'about-us' %}
               sidebar-nav-active{% endif %}">
