@@ -387,4 +387,54 @@ class CustomerUpdateViewPrivateTest(TestCase):
         response_post = self.client.post(self.url, post_data)
         self.assertEqual(response_post.status_code, 302)
         self.assertRedirects(response_post, reverse(f"catalog:customer-detail"))
-     
+
+
+class CustomerWishlistViewPublicTest(TestCase):
+    def test_customer_wishlist_view_is_private(self):
+        url = reverse(f"catalog:customer-wishlist")
+        response = self.client.get(url)
+        self.assertNotEqual(response.status_code, 200)
+
+
+class CustomerWishlistViewPrivateTest(TestCase):
+    def setUp(self):
+        self.view = "product_list"
+        self.num_per_page = ProductListView.paginate_by
+        self.user = get_user_model().objects.create_user(
+            email="TestUser@test.com",
+            password="password",
+        )
+
+        for _ in range(self.num_per_page + 1):
+            item = Clothing.objects.create(
+                name="одяг",
+                price_low=100,
+                price_high=200,
+            )
+            item.customers.add(self.user)
+
+        Footwear.objects.create(
+            name="взуття",
+            price_low=100,
+            price_high=200,
+        )
+
+        self.client.force_login(self.user)
+        self.url = reverse(f"catalog:customer-wishlist")
+        self.response = self.client.get(self.url)
+        self.template = f"catalog/product_list.html"
+
+    def test_customer_wishlist_view_is_accessible(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_customer_wishlist_view_uses_correct_template(self):
+        self.assertTemplateUsed(self.response, self.template)
+
+    def test_customer_wishlist_view_pagination_is_correct(self):
+        self.assertTrue(self.response.context["is_paginated"])
+        self.assertEqual(len(self.response.context[self.view]), self.num_per_page)
+
+    def test_customer_wishlist_view_displays_all_items(self):
+        num_pages = self.response.context["paginator"].num_pages
+        response = self.client.get(self.url + f"?page={num_pages}")
+        self.assertEqual(len(response.context[self.view]), 1)
