@@ -16,8 +16,8 @@
   <form action="{% url 'customer-registration' %}" method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Зареєструватись" class="btn btn-primary">
     <input type="hidden" name="next" value="{{ next }}">
+    <input type="submit" value="Зареєструватись" class="btn btn-primary">
     <a href="{% url 'customer-registration' %}" class="btn btn-secondary">
       Очистити
     </a>
