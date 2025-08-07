@@ -36,7 +36,7 @@ urlpatterns = [
     path(
         "accounts/user/wishlist/", 
         CustomerWishlistView.as_view(), 
-        name="customer-wish-list"
+        name="customer-wishlist"
         ),
     path(
         "product-image/<int:image_pk>/", 
