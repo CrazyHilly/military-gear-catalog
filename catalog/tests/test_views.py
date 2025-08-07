@@ -75,7 +75,7 @@ class ProductListViewTest(TestCase):
     def test_product_list_view_uses_correct_template(self):
         self.assertTemplateUsed(self.response, self.template)
 
-    def test_product_list_pagination_is_correct(self):
+    def test_product_list_view_pagination_is_correct(self):
         self.assertTrue(self.response.context["is_paginated"])
         self.assertEqual(len(self.response.context[self.view]), self.num_per_page)
 
@@ -160,7 +160,7 @@ class CountryListViewTest(TestCase):
     def test_country_list_view_uses_correct_template(self):
         self.assertTemplateUsed(self.response, self.template)
 
-    def test_country_list_pagination_is_correct(self):
+    def test_country_list_view_pagination_is_correct(self):
         self.assertFalse(self.response.context["is_paginated"])
         self.assertEqual(len(self.response.context[self.view]), 1)
 
@@ -216,7 +216,7 @@ class CountryProductsListViewTest(TestCase):
     def test_country_product_list_view_uses_correct_template(self):
         self.assertTemplateUsed(self.response, self.template)
 
-    def test_country_product_list_pagination_is_correct(self):
+    def test_country_product_list_view_pagination_is_correct(self):
         self.assertFalse(self.response.context["is_paginated"])
         self.assertEqual(len(self.response.context[self.view]), 1)
 
