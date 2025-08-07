@@ -253,6 +253,81 @@ class CountryProductsListViewTest(TestCase):
         self.assertEqual(form.initial.get("search_input"), "одяг")
 
 
+class RegistrationViewPublicTest(TestCase):
+    def setUp(self):
+        self.url = reverse(f"customer-registration")
+        self.response = self.client.get(self.url)
+        self.template = f"registration/registration.html"
+        self.post_data = {
+            "first_name": "test_name", 
+            "last_name": "test_last_name",
+            "email": "test@test.com",
+            "password1": "password",
+            "password2": "password"
+            }
+
+    def test_registration_view_is_accessible(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_registration_view_uses_correct_template(self):
+        self.assertTemplateUsed(self.response, self.template)
+
+    def test_registration_view_contains_all_fields(self):
+        form = self.response.context.get("form")
+        self.assertIn("first_name", form.fields)
+        self.assertIn("last_name", form.fields)
+        self.assertIn("email", form.fields)
+        self.assertIn("password1", form.fields)
+        self.assertIn("password2", form.fields)
+
+    def test_registration_view_context_is_correct(self):
+        next_url = reverse("catalog:country-list")
+        url_with_next = reverse("customer-registration") + f"?next={next_url}"
+        
+        response_get = self.client.get(url_with_next)
+        self.assertEqual(response_get.status_code, 200)
+        self.assertIn("next", response_get.context)
+        self.assertEqual(response_get.context["next"], next_url)
+
+    def test_registration_view_gets_user_logged_in_on_success(self):
+        response_post = self.client.post(self.url, self.post_data)
+        user = response_post.wsgi_request.user
+        self.assertTrue(user.is_authenticated)
+        self.assertEqual(self.post_data["first_name"], user.first_name)
+        self.assertEqual(self.post_data["last_name"], user.last_name)
+        self.assertEqual(self.post_data["email"], user.email)
+        self.assertTrue(user.password)
+
+    def test_registration_view_redirects_to_index_page(self):
+        response_post = self.client.post(self.url, self.post_data)
+        self.assertEqual(response_post.status_code, 302)
+        self.assertRedirects(response_post, reverse(f"catalog:product-list"))
+
+    def test_registration_view_redirects_to_next_page(self):
+        next_url = reverse(f"catalog:country-list")
+        self.assertEqual(self.response.status_code, 200)
+
+        self.post_data["next"] = next_url
+        response_post = self.client.post(self.url, self.post_data)
+        self.assertEqual(response_post.status_code, 302)
+        self.assertRedirects(response_post, next_url)
+
+
+class RegistrationViewPrivateTest(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email="TestUser@test.com",
+            password="password",
+        )
+        self.client.force_login(self.user)
+        self.url = reverse(f"customer-registration")
+        self.response = self.client.get(self.url)
+
+    def test_authenticated_user_is_redirected_from_registration_view(self):
+        self.assertEqual(self.response.status_code, 302)
+        self.assertRedirects(self.response, reverse(f"catalog:product-list"))
+
+
 class CustomerDetailViewPublicTest(TestCase):
     def test_customer_detail_view_is_private(self):
         url = reverse(f"catalog:customer-detail")
@@ -312,69 +387,4 @@ class CustomerUpdateViewPrivateTest(TestCase):
         response_post = self.client.post(self.url, post_data)
         self.assertEqual(response_post.status_code, 302)
         self.assertRedirects(response_post, reverse(f"catalog:customer-detail"))
-
-
-class RegistrationViewPublicTest(TestCase):
-    def setUp(self):
-        self.url = reverse(f"customer-registration")
-        self.response = self.client.get(self.url)
-        self.template = f"registration/registration.html"
-        self.post_data = {
-            "first_name": "test", 
-            "last_name": "test",
-            "email": "test@test.com",
-            "password1": "password",
-            "password2": "password"
-            }
-
-    def test_registration_view_is_accessible(self):
-        self.assertEqual(self.response.status_code, 200)
-
-    def test_registration_view_uses_correct_template(self):
-        self.assertTemplateUsed(self.response, self.template)
-
-    def test_registration_view_contains_all_fields(self):
-        form = self.response.context.get("form")
-        self.assertIn("first_name", form.fields)
-        self.assertIn("last_name", form.fields)
-        self.assertIn("email", form.fields)
-        self.assertIn("password1", form.fields)
-        self.assertIn("password2", form.fields)
-
-    def test_registration_view_redirects_to_index_page(self):
-        response_post = self.client.post(self.url, self.post_data)
-        self.assertEqual(response_post.status_code, 302)
-        self.assertRedirects(response_post, reverse(f"catalog:product-list"))
-
-        user = response_post.wsgi_request.user
-        self.assertTrue(user.is_authenticated)
-
-    def test_registration_view_redirects_to_next_page(self):
-        next_url = reverse(f"catalog:country-list")
-        url_with_next = reverse("customer-registration") + f"?next={next_url}"
-        
-        response_get = self.client.get(url_with_next)
-        self.assertEqual(response_get.status_code, 200)
-
-        response_post = self.client.post(url_with_next, self.post_data)
-        self.assertEqual(response_post.status_code, 302)
-        self.assertRedirects(response_post, next_url)
-
-        user = response_post.wsgi_request.user
-        self.assertTrue(user.is_authenticated)
-
-
-class RegistrationViewPrivateTest(TestCase):
-    def setUp(self):
-        self.user = get_user_model().objects.create_user(
-            email="TestUser@test.com",
-            password="password",
-        )
-        self.client.force_login(self.user)
-        self.url = reverse(f"customer-registration")
-        self.response = self.client.get(self.url)
-
-    def test_authenticated_user_is_redirected_from_registration_view(self):
-        self.assertEqual(self.response.status_code, 302)
-        self.assertRedirects(self.response, reverse(f"catalog:product-list"))
-        
+     
