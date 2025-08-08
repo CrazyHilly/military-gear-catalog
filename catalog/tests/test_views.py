@@ -438,3 +438,76 @@ class CustomerWishlistViewPrivateTest(TestCase):
         num_pages = self.response.context["paginator"].num_pages
         response = self.client.get(self.url + f"?page={num_pages}")
         self.assertEqual(len(response.context[self.view]), 1)
+
+
+class UpdateWishlistViewPublicTest(TestCase):
+    def setUp(self):
+        self.clothing = Clothing.objects.create(
+            name="одяг", 
+            price_low=1, 
+            price_high=2
+            )
+        self.url = reverse(
+            f"catalog:update-wishlist", 
+            kwargs={"product_number": self.clothing.product_number}
+            )
+        self.response = self.client.get(self.url)
+
+    def test_update_wishlist_view_is_private(self):
+        self.assertNotEqual(self.response.status_code, 200)
+
+    def test_update_wishlist_view_redirects_unauthorized_user(self):
+        self.assertEqual(self.response.status_code, 302)
+        self.assertRedirects(self.response, f"/accounts/login/?next={self.url}")
+
+
+class UpdateWishlistViewPrivateTest(TestCase):
+    def setUp(self):
+        self.clothing = Clothing.objects.create(
+            name="одяг", 
+            price_low=1, 
+            price_high=2
+            )
+        
+        self.user = get_user_model().objects.create_user(
+            email="TestUser@test.com",
+            password="password",
+        )
+        self.client.force_login(self.user)
+        self.url = reverse(
+            f"catalog:update-wishlist", 
+            kwargs={"product_number": self.clothing.product_number}
+            )
+        
+        self.next_detail_url = reverse(
+            "catalog:product-detail", 
+            kwargs={"slug": self.clothing.slug}
+            )
+        self.detail_response = self.client.get(
+            self.url + f"?action=add&next={self.next_detail_url}"
+            )
+
+        self.next_list_url = reverse("catalog:clothing-list")
+        self.list_response = self.client.get(
+            self.url + f"?action=add&next={self.next_list_url}"
+            )
+        
+    def test_update_wishlist_view_adds_product_to_wishlist(self):
+        self.assertIn(Product.objects.first(), self.user.wishlist.all())
+
+    def test_update_wishlist_view_removes_product_from_wishlist(self):
+        self.client.get(self.url)
+        self.assertNotIn(Product.objects.first(), self.user.wishlist.all())
+        
+    def test_update_wishlist_view_redirect_is_correct(self):
+        self.assertEqual(self.detail_response.status_code, 302)
+        self.assertRedirects(self.detail_response, self.next_detail_url)
+
+        self.assertEqual(self.list_response.status_code, 302)
+        self.assertRedirects(self.list_response, self.next_list_url)
+
+        response = self.client.get(self.url + f"?next={self.next_detail_url}")
+        self.assertRedirects(response, self.next_detail_url)
+
+        response = self.client.get(self.url + f"?next={self.next_list_url}")
+        self.assertRedirects(response, self.next_list_url)
