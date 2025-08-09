@@ -511,3 +511,36 @@ class UpdateWishlistViewPrivateTest(TestCase):
 
         response = self.client.get(self.url + f"?next={self.next_list_url}")
         self.assertRedirects(response, self.next_list_url)
+
+
+class ProductImageDetailViewTest(TestCase):
+    def setUp(self):
+        product = Clothing.objects.create(name="одяг", price_low="1", price_high="2")
+        image = "catalog/tests/test_media/test_1.jpg"
+        self.product_image = ProductImage.objects.create(
+            product=product, 
+            image=image
+            )
+        self.url = reverse(
+            f"catalog:product-image-detail", 
+            kwargs={"image_pk": self.product_image.pk}
+            )
+        self.response = self.client.get(self.url)
+
+    def test_product_image_detail_view_uses_correct_template(self):
+        self.assertTemplateUsed(self.response, "catalog/product_image_detail.html")
+
+    def test_product_image_detail_view_is_accessible(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_product_image_detail_view_returns_404(self):
+        url = reverse(
+            f"catalog:product-image-detail", 
+            kwargs={"image_pk": 999999}
+            )
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_product_image_detail_view_displays_correct_image(self):
+        self.assertEqual(self.response.context["image"], self.product_image)
+        self.assertContains(self.response, self.product_image.image.url)
