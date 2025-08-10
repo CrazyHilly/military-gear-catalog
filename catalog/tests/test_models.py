@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.test import TestCase
 from slugify import slugify
 
@@ -305,22 +306,21 @@ class ProductModelTest(TestCase):
             self.assertTrue(main_image.is_main)
             self.assertFalse(image.is_main)
 
-            main_image.is_main = False
-            main_image.save()
+            main_image.delete()
 
     def test_product_str(self):
         for product in self.products:
             self.assertEqual(str(product), f"{product.product_number} {product.name}")
 
     def test_product_ordering(self):
-        self.assertEqual(Product.objects.first().pk, self.clothing.pk)
-        self.assertEqual(Product.objects.last().pk, self.accessory.pk)
+        self.assertEqual(Product.objects.first().pk, self.accessory.pk)
+        self.assertEqual(Product.objects.last().pk, self.clothing.pk)
 
-        self.clothing.available = False
-        self.clothing.save()
+        self.accessory.available = False
+        self.accessory.save()
         
         self.assertEqual(Product.objects.first().pk, self.footwear.pk)
-        self.assertEqual(Product.objects.last().pk, self.clothing.pk)
+        self.assertEqual(Product.objects.last().pk, self.accessory.pk)
 
     def test_product_class_should_not_create_instances(self):
         with self.assertRaises(ValidationError):
@@ -331,7 +331,6 @@ class ProductModelTest(TestCase):
 
 
 class ProductImageModelTest(TestCase):
-    @classmethod
     def setUp(self):
         self.country = Country.objects.create(ua_name="Франція", en_name="France")
         self.product = Clothing.objects.create(
@@ -354,6 +353,16 @@ class ProductImageModelTest(TestCase):
     def test_product_image_is_deleted_on_product_delete(self):
         self.product.delete()
         self.assertFalse(ProductImage.objects.exists())
+
+    def test_product_image_is_unique(self):
+        product = Footwear.objects.create(
+            name="взуття",
+            country=self.country,
+            price_low=1,
+            price_high=1
+        )
+        with self.assertRaises(IntegrityError):
+            ProductImage.objects.create(product=product, image=self.image)
 
     def test_product_image_adds_correct_image(self):
         self.assertEqual(self.product_image.image, self.image)
@@ -381,7 +390,6 @@ class ProductImageModelTest(TestCase):
 
 
 class CustomerModelTest(TestCase):
-    @classmethod
     def setUp(self):
         self.customer = get_user_model().objects.create(
             first_name="test", 

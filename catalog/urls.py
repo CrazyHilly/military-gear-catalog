@@ -31,12 +31,12 @@ urlpatterns = [
         CountryProductsListView.as_view(), 
         name="country-products-list"
         ),
-    path("account/", CustomerDetailView.as_view(), name="customer-detail"),
-    path("account/update", CustomerUpdateView.as_view(), name="customer-update"),
+    path("accounts/user/", CustomerDetailView.as_view(), name="customer-detail"),
+    path("accounts/user/update", CustomerUpdateView.as_view(), name="customer-update"),
     path(
-        "account/wishlist/", 
+        "accounts/user/wishlist/", 
         CustomerWishlistView.as_view(), 
-        name="customer-wish-list"
+        name="customer-wishlist"
         ),
     path(
         "product-image/<int:image_pk>/", 

@@ -6,45 +6,48 @@
 {% endblock %}
 
 {% block content %}
-  <form method="get" action="" class="gap-2 mb-0 mt-2">
-    <div class="form-inline m-0">
-      <div class="mr-1">
-        {{ search_form|crispy }}
+  {% if request.resolver_match.view_name != 'catalog:customer-wishlist' %}
+    <form method="get" action="" class="gap-2 mb-2 mt-2">
+      <div class="form-inline m-0">
+        <div class="mr-1">
+          {{ search_form|crispy }}
+        </div>
+
+        <div class="d-flex flex-nowrap">
+          <input class="btn btn-primary mr-1" 
+                 type="submit" 
+                 value="Пошук" 
+                 autocomplete="off-word"
+          >
+          <a class="btn btn-secondary" href="{{ request.path }}">
+            Очистити
+          </a>
+        </div>
       </div>
 
-      <div class="d-flex flex-nowrap">
-        <input class="btn btn-primary mr-1" 
-               type="submit" 
-               value="Пошук" 
-               autocomplete="off-word"
+      <div class="font-size-07 text-color-darkgrey radio">
+        <input type="radio" 
+               name="search_scope" 
+               id="scope-category" 
+               value="category" 
+               {% if search_scope == "category" %}checked{% endif %}
         >
-        <a class="btn btn-secondary" href="{{ request.path }}">
-          Очистити
-        </a>
+        <label class="form-check-label mr-4" for="scope-category">
+          Шукати в обраній категорії
+        </label>
+       <input type="radio" 
+               name="search_scope" 
+               id="scope-global" 
+               value="global" 
+               {% if search_scope == "global" %}checked{% endif %}
+        >
+        <label class="form-check-label" for="scope-global">
+          Шукати по сайту
+        </label>
       </div>
-    </div>
-
-    <div class="font-size-07 text-color-darkgrey radio">
-      <input type="radio" 
-             name="search_scope" 
-             id="scope-category" 
-             value="category" 
-             {% if search_scope == "category" %}checked{% endif %}
-      >
-      <label class="form-check-label mr-4" for="scope-category">
-        Шукати в обраній категорії
-      </label>
-     <input type="radio" 
-             name="search_scope" 
-             id="scope-global" 
-             value="global" 
-             {% if search_scope == "global" %}checked{% endif %}
-      >
-      <label class="form-check-label" for="scope-global">
-        Шукати по сайту
-      </label>
-    </div>
-  </form>
+    </form>
+  {% else %}
+  {% endif %}
 
   {% if object_list %}
     <div class="product-grid-list">

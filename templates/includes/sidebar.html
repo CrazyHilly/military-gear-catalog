@@ -1,5 +1,5 @@
 {% load static %}
-<a href="{% url 'product-list' %}">
+<a href="{% url 'catalog:product-list' %}">
   <img class="logo" src="{% static 'images/Defender.png' %}" alt="Каталог товарів">
 </a>
 
@@ -22,8 +22,8 @@
     </li>
 
     <li>
-      <a href="{% url 'catalog:customer-wish-list' %}"
-         class="{% if request.resolver_match.view_name == 'catalog:customer-wish-list' %}
+      <a href="{% url 'catalog:customer-wishlist' %}"
+         class="{% if request.resolver_match.view_name == 'catalog:customer-wishlist' %}
                 sidebar-nav-active{% endif %}">
         Список бажань 
         {% if user.wishlist.all %}
@@ -55,21 +55,20 @@
 
     <li>
       <a {% if request.path == '/' or 'accounts' in request.path %}
-           href="{% url 'registration' %}"
+           href="{% url 'customer-registration' %}"
          {% else %}
-           href="{% url 'registration' %}?next={{ request.path }}"
+           href="{% url 'customer-registration' %}?next={{ request.path }}"
          {% endif %}
-         class="{% if request.resolver_match.view_name == 'registration' %}
+         class="{% if request.resolver_match.view_name == 'customer-registration' %}
                 sidebar-nav-active{% endif %}">
         Зареєструватись
       </a>
     </li>
   {% endif %}
-  <br>
 
-  <li>
+  <li class="sidebar-heading">
     <a href="{% url 'catalog:product-list' %}"
-       class="{% if 'product-list' in request.resolver_match.view_name %}
+       class="{% if 'catalog:product-list' in request.resolver_match.view_name %}
               sidebar-nav-active{% endif %}">
       Каталог товарів
     </a>
@@ -97,10 +96,9 @@
       </a>
     </li>
   </ul>
-  <br>
 
   {% if countries_with_products %}
-    <li>
+    <li class="sidebar-heading">
       <a href="{% url 'catalog:country-list' %}"
          class="{% if request.resolver_match.view_name == 'catalog:country-list' %}
                 sidebar-nav-active{% endif %}">
@@ -119,9 +117,8 @@
       {% endfor %}
     </ul>
   {% endif %}
-  <br>
 
-  <li>
+  <li class="sidebar-heading">
     <a href="{% url 'about-us' %}"
        class="{% if request.resolver_match.view_name == 'about-us' %}
               sidebar-nav-active{% endif %}">
