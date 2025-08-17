@@ -35,6 +35,12 @@ Customers can:
 
 [https://defender-ijhv.onrender.com/](https://defender-ijhv.onrender.com/)
 
+User can be created using [Register ](https://defender-ijhv.onrender.com/accounts/registration/)form.
+
+Test user:
+email: user@test.com
+password: user12345
+
 #### 📸 Screenshots
 
 _(Coming soon)_ — Will add screenshots of the product list, detail view, and admin panel once UI is more polished.

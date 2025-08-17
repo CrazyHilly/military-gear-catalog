@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 
 from catalog.models import ProductImage
 
@@ -55,7 +54,7 @@ class ProductImageInlineForm(forms.ModelForm):
             for product_image in product_images:
                 if (image.name in product_image and 
                     self.instance.image.name != product_image):
-                    self.add_error(None, ValidationError(
+                    self.add_error(None, forms.ValidationError(
                         f'Зображення з імʼям "{image.name}" вже існує.',
                         code="duplicate_filename"
                     ))

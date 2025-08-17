@@ -14,11 +14,6 @@ from catalog.models import Product, Clothing, Footwear, Accessory, Country, Prod
 class ProductDetailView(generic.DetailView):
     model = Product
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["main_image"] = self.object.images.filter(is_main=True).first()
-        return context
-    
     def get_queryset(self):
         qs = super().get_queryset().select_related("country").prefetch_related("images")
         return qs
@@ -36,7 +31,8 @@ class ProductListView(generic.ListView):
         return self.request.session.get("search_scope", self.default_search_scope)
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related("country").prefetch_related("images")
+        queryset = \
+            super().get_queryset().select_related("country").prefetch_related("images")
         search_input = self.request.GET.get("search_input")
         search_scope = self.get_search_scope()
         
@@ -96,6 +92,30 @@ class CountryProductsListView(ProductListView):
         return super().get_queryset().filter(country=country)
 
 
+class RegistrationView(generic.CreateView):
+    model = get_user_model()
+    form_class = RegistrationForm
+    template_name = "registration/registration.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("catalog:product-list")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["next"] = self.request.GET.get("next", "")
+        return context
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        return response
+    
+    def get_success_url(self):
+        return self.request.POST.get("next") or reverse_lazy("catalog:product-list")
+
+
 class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
 
@@ -111,25 +131,6 @@ class CustomerUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self):
         return self.request.user
-    
-
-class RegistrationView(generic.CreateView):
-    model = get_user_model()
-    form_class = RegistrationForm
-    template_name = "registration/registration.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["next"] = self.request.GET.get("next", "")
-        return context
-    
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        login(self.request, self.object)
-        return response
-    
-    def get_success_url(self):
-        return self.request.POST.get("next") or reverse_lazy("product-list")
 
 
 class CustomerWishlistView(LoginRequiredMixin, ProductListView):
