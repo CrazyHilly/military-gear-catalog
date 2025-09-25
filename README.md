@@ -41,16 +41,6 @@ Test user:
 email: user@test.com
 password: user12345
 
-#### 📸 Screenshots
-
-<img width="1739" height="766" alt="image" src="https://github.com/user-attachments/assets/93cb24ed-6e84-4355-b2c0-ebf4ee7b4442" />
-<img width="1625" height="747" alt="image" src="https://github.com/user-attachments/assets/d1409661-255c-4386-9ede-173614c3f88b" />
-<img width="1305" height="795" alt="image" src="https://github.com/user-attachments/assets/b1b7413a-5db4-43eb-8c93-8ebd68fa9a87" />
-<img width="1533" height="800" alt="image" src="https://github.com/user-attachments/assets/21a820b3-923c-46f0-be6d-218516fd9b2a" />
-<img width="1509" height="813" alt="image" src="https://github.com/user-attachments/assets/71882384-a14b-4654-b6bd-5e79d25af46a" />
-<img width="1742" height="763" alt="image" src="https://github.com/user-attachments/assets/a74a38fc-fb69-41a2-b8dc-7a54b0f1841a" />
-
-
 #### 🛠️ Technologies Used
 
 - Python 3.12
@@ -96,5 +86,14 @@ However, feedback and suggestions are always welcome!
 #### 😄 Fun
 
 If you reached this section, you should be rewarded: 👉 [Click here to have some fun :)](https://defender-ijhv.onrender.com/countries/EU/)
+
+#### 📸 Screenshots
+
+<img width="1739" height="766" alt="image" src="https://github.com/user-attachments/assets/93cb24ed-6e84-4355-b2c0-ebf4ee7b4442" />
+<img width="1625" height="747" alt="image" src="https://github.com/user-attachments/assets/d1409661-255c-4386-9ede-173614c3f88b" />
+<img width="1305" height="795" alt="image" src="https://github.com/user-attachments/assets/b1b7413a-5db4-43eb-8c93-8ebd68fa9a87" />
+<img width="1533" height="800" alt="image" src="https://github.com/user-attachments/assets/21a820b3-923c-46f0-be6d-218516fd9b2a" />
+<img width="1509" height="813" alt="image" src="https://github.com/user-attachments/assets/71882384-a14b-4654-b6bd-5e79d25af46a" />
+<img width="1742" height="763" alt="image" src="https://github.com/user-attachments/assets/a74a38fc-fb69-41a2-b8dc-7a54b0f1841a" />
 
 ***Made with ❤️ by CrazyHilly***
