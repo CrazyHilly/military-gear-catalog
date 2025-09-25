@@ -1,8 +1,8 @@
 # Military Gear Catalog
 
-A web-based **product catalog** for a real-world store selling second-hand military uniform and gear originating from various European armies.
+A web-based **product catalog** for a real-world store selling second-hand military uniforms and gear originating from various European armies.
 
-This catalog is built with Python and Django and serves as an online showcase for customers to browse available products, view prices, and find contact information for ordering or visiting the store.
+This catalog is built using Python and Django, serving as an online showcase for customers to browse available products, view prices, and find contact information for ordering or visiting the store.
 
 #### 💡 Purpose
 
@@ -15,7 +15,7 @@ Customers can:
 - View detailed information and photos of the products
 - Filter product list by category or country of origin
 - Search for products within a category or across the catalog
-- Create personal account and add products to a wishlist
+- Create a personal account and add products to a wishlist
 - Get store contact info to order by phone or visit in person
 
 #### ⚙️ Features
@@ -44,8 +44,12 @@ password: user12345
 #### 📸 Screenshots
 
 <img width="1739" height="766" alt="image" src="https://github.com/user-attachments/assets/93cb24ed-6e84-4355-b2c0-ebf4ee7b4442" />
+<img width="1625" height="747" alt="image" src="https://github.com/user-attachments/assets/d1409661-255c-4386-9ede-173614c3f88b" />
+<img width="1305" height="795" alt="image" src="https://github.com/user-attachments/assets/b1b7413a-5db4-43eb-8c93-8ebd68fa9a87" />
+<img width="1533" height="800" alt="image" src="https://github.com/user-attachments/assets/21a820b3-923c-46f0-be6d-218516fd9b2a" />
+<img width="1509" height="813" alt="image" src="https://github.com/user-attachments/assets/71882384-a14b-4654-b6bd-5e79d25af46a" />
+<img width="1742" height="763" alt="image" src="https://github.com/user-attachments/assets/a74a38fc-fb69-41a2-b8dc-7a54b0f1841a" />
 
-_(Coming soon)_ — Will add screenshots of the product list, detail view, and admin panel once UI is more polished.
 
 #### 🛠️ Technologies Used
 
@@ -81,7 +85,7 @@ Initial goals:
 
 Final goals:
 
-* Create a working website catalog for my parent's store
+* Create a working website catalog for my parents' store
 * Make this a portfolio project
 
 #### 🤝 Contributions
