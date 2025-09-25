@@ -43,6 +43,8 @@ password: user12345
 
 #### 📸 Screenshots
 
+<img width="1739" height="766" alt="image" src="https://github.com/user-attachments/assets/93cb24ed-6e84-4355-b2c0-ebf4ee7b4442" />
+
 _(Coming soon)_ — Will add screenshots of the product list, detail view, and admin panel once UI is more polished.
 
 #### 🛠️ Technologies Used
